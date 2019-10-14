@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.followfunction">
+
+    <permission android:name="ACCOUNT_MANAGER" />
+    <permission android:name="FITNESS_ACTIVITY_READ_WRITE" />
+    <permission android:name="FITNESS_BODY_READ_WRITE" />
+    <permission android:name="FITNESS_LOCATION_READ_WRITE" />
+    <permission android:name="FITNESS_NUTRITION_READ_WRITE" />
+    <permission android:name="BODY_SENSORS" />
+    <permission android:name="GET_TASKS" />
+
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- 인터넷을 사용함 -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
+
+    <uses-feature
+        android:name="android.hardware.camera2.full"
+        android:required="false" />
+    <!-- 카메라 사용 -->
+    <uses-feature
+        android:name="android.hardware.camera.full"
+        android:required="false" />
+    <!-- 카메라 사용 -->
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.front"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera2"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera2.front"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera2.autofocus"
+        android:required="false" />
+    <application
+        android:fullBackupContent="@xml/backup_descriptor"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:largeHeap="true"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Bodygator"
+        tools:ignore="GoogleAppIndexingWarning">
+        <activity
+            android:name=".MainActivity"
+            android:icon="@mipmap/ic_launcher_round"
+            android:label="@string/app_name"
+            android:theme="@style/Bodygator">
+            <meta-data
+                android:name="com.google.android.gms.version"
+                android:value="@integer/google_play_services_version" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="vnd.google.fitness.VIEW" />
+            </intent-filter>
+            <intent-filter>
+                <data android:mimeType="vnd.google.fitness.data_type/com.google.weight" />
+                <data android:mimeType="vnd.google.fitness.data_type/com.google.weight.summary" />
+                <data android:mimeType="vnd.google.fitness.data_type/com.google.calories.expended" />
+                <data android:mimeType="vnd.google.fitness.data_type/com.google.step_count.delta" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
