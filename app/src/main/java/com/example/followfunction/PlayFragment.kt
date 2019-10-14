@@ -20,7 +20,10 @@ import android.hardware.camera2.CameraDevice.TEMPLATE_RECORD
 import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.net.Uri
-import android.os.*
+import android.os.Bundle
+import android.os.Environment
+import android.os.Handler
+import android.os.HandlerThread
 import android.util.Log
 import android.util.Size
 import android.util.SparseIntArray
@@ -37,15 +40,14 @@ import androidx.annotation.NonNull
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.content.PermissionChecker.checkSelfPermission
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import cn.gavinliu.android.lib.scale.ScaleRelativeLayout
 import com.example.followfunction.camerause.AutoFitTextureView
 import com.example.followfunction.camerause.CompareSizesByArea
 import com.example.followfunction.camerause.ErrorDialog
 import com.example.followfunction.support.rotationCallbackFn
 import com.example.followfunction.support.rotationListenerHelper
-import cn.gavinliu.android.lib.scale.ScaleRelativeLayout
 import kotlinx.android.synthetic.main.fragment_play.*
 import java.io.File
 import java.io.IOException
@@ -68,7 +70,7 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
     private val ARG_PARAM1 = "url"
     private val ARG_PARAM2 = "videotype"
     private var param1: String? = null
-    private var listener: PlayFragment.OnFragmentInteractionListener? = null
+    private var listener: OnFragmentInteractionListener? = null
     private val SENSOR_ORIENTATION_DEFAULT_DEGREES = 90
     private val SENSOR_ORIENTATION_INVERSE_DEGREES = 270
     private val TAG = "Item_follow_fragment_21"
@@ -1118,8 +1120,6 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
          * Conversion from screen rotation to JPEG orientation.
          */
         private val ORIENTATIONS = SparseIntArray()
-        private val FRAGMENT_DIALOG = "dialog"
-
         init {
             ORIENTATIONS.append(Surface.ROTATION_0, 90)
             ORIENTATIONS.append(Surface.ROTATION_90, 0)

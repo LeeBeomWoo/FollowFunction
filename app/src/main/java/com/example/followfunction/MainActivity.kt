@@ -137,6 +137,7 @@ class MainActivity : AppCompatActivity(), FollowFragment.OnFollowInteraction, Yo
             }
         }
     }
+
     override fun showVideo(s: String) {
         sectionInt = 2
         if(playFragment == null) {
