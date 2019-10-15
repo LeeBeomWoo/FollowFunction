@@ -7,10 +7,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.fragment.app.Fragment
 import com.example.followfunction.R
-import com.example.followfunction.R.*
+import com.example.followfunction.R.layout
+import com.example.followfunction.R.string
 import kotlinx.android.synthetic.main.select_view.*
 import kotlinx.coroutines.runBlocking
 
@@ -25,8 +25,6 @@ import kotlinx.coroutines.runBlocking
  */
 private const val ARG_PARAM1 = "img"
 class FollowFragment : Fragment(), View.OnClickListener {
-    private lateinit var search_Btn: Button
-
     val TAG = "FollowFragment"
     lateinit var mParam1: String
     @SuppressLint("RestrictedApi")
@@ -42,13 +40,13 @@ class FollowFragment : Fragment(), View.OnClickListener {
                 mListener!!.showVideo(txtB_youtube_url.text.toString())
                 mListener!!.sendsection = 2
                 Log.i(TAG, "play_Btn")
-            }
+            }/*
             R.id.btn_vimeo_search -> consume {
                 Log.i(TAG, "search_Btn")
                 onButtonPressed(txtB_vimeo_search.text.toString())
                 Log.i(TAG, txtB_vimeo_search.text.toString())
                 mListener!!.sendsection = 1
-            }
+            }*/
             R.id.btn_vimeo_url -> consume {
                 mListener!!.showVideo(txtB_vimeo_url.text.toString())
                 mListener!!.sendsection = 2
@@ -77,7 +75,10 @@ class FollowFragment : Fragment(), View.OnClickListener {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        search_Btn.setOnClickListener(this)
+        btn_youtube_search.setOnClickListener(this)
+        btn_youtube_url.setOnClickListener(this)
+        btn_vimeo_url.setOnClickListener(this)
+       // btn_vimeo_search.setOnClickListener(this)
         mListener!!.visableFragment = TAG
 
     }
@@ -121,6 +122,7 @@ class FollowFragment : Fragment(), View.OnClickListener {
         fun showVideo(s: String)
         var sendsection:Int
         var sendtype:Int
+        var viideoId:String?
     }
     companion object {
         // TODO: Rename parameter arguments, choose names that match

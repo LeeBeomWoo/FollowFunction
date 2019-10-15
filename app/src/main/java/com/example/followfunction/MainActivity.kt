@@ -71,6 +71,7 @@ class MainActivity : AppCompatActivity(), FollowFragment.OnFollowInteraction, Yo
     private var doubleBackToExitPressedOnce: Boolean = false
     override val context: Context = this
     override var sendquery:String? = null
+    override var viideoId:String? = null
     override var sendsection:Int = 0
     override var sendtype:Int = 0 //0은 유튜브, 1은 비메오
     override var data: MutableList<SearchResult> = arrayListOf()
@@ -128,7 +129,7 @@ class MainActivity : AppCompatActivity(), FollowFragment.OnFollowInteraction, Yo
                     Log.i(TAG, "mainTabFragment")
                     supportFragmentManager
                         .beginTransaction()
-                        .add(R.id.root_layout, PlayFragment.newInstance(sendquery!!, sendtype), "play")
+                        .add(R.id.root_layout, PlayFragment.newInstance(viideoId!!, sendtype), "play")
                         .commit()
                 }else{
                     supportFragmentManager

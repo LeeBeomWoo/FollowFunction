@@ -63,13 +63,15 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
     }
     private val FURL = "<html><body><iframe width=\"1280\" height=\"720\" src=\""
     private val BURL = "\" frameborder=\"0\" allowfullscreen></iframe></html></body>"
-    private val CHANGE = "https://www.youtube.com/embed/"
+    private val YCHANGE = "https://www.youtube.com/embed/"
+    private val VCHANGE = "https://player.vimeo.com/video/"
     var URL:String? = null
     val REQUEST_VIDEO_PERMISSIONS = 1
     val VIDEO_PERMISSIONS = arrayOf(Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
     private val ARG_PARAM1 = "url"
     private val ARG_PARAM2 = "videotype"
     private var param1: String? = null
+    private var param2: Int = 0 //0은 유튜브, 1은 비메오
     private var listener: OnFragmentInteractionListener? = null
     private val SENSOR_ORIENTATION_DEFAULT_DEGREES = 90
     private val SENSOR_ORIENTATION_INVERSE_DEGREES = 270
@@ -237,9 +239,11 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
         if(savedInstanceState != null){
             Log.i(TAG, "onCreate savedInstanceState")
             param1 = savedInstanceState.getString(ARG_PARAM1)
+            param2 = savedInstanceState.getInt(ARG_PARAM2)
         }else {
             arguments?.let {
                 param1 = it.getString(ARG_PARAM1)
+                param2 = it.getInt(ARG_PARAM2)
             }
         }
         val state = Environment.getExternalStorageState()
@@ -450,7 +454,6 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
         switchlayout!!.addRule(ScaleRelativeLayout.CENTER_VERTICAL)
         switchlayout!!.setMargins(getResources().getDimensionPixelSize(R.dimen.imageBtnmargine_item), getResources().getDimensionPixelSize(R.dimen.imageBtnmargine_item), getResources().getDimensionPixelSize(R.dimen.imageBtnmargine_item), getResources().getDimensionPixelSize(R.dimen.imageBtnmargine_item))
         viewChange_Btn.setLayoutParams(switchlayout);
-        alpha_control.setVisibility(View.VISIBLE)
         LandCamera!!.addRule(ScaleRelativeLayout.END_OF, R.id.button_layout)
         LandCamera!!.addRule(ScaleRelativeLayout.ALIGN_PARENT_BOTTOM)
         LandCamera!!.addRule(ScaleRelativeLayout.ALIGN_PARENT_END)
@@ -461,6 +464,7 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
         webview.setLayoutParams(LandWebView)
         video_View.setLayoutParams(LandCamera)
         textureView.setLayoutParams(LandCamera)
+        alpha_control.visibility = View.VISIBLE
         if(video_camera){
             video_View.visibility = View.VISIBLE
             textureView.visibility = View.GONE
@@ -604,7 +608,11 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
         settings.setSupportMultipleWindows(true)
         settings.setLoadWithOverviewMode(true)
         settings.setUseWideViewPort(true)
-        URL = FURL + CHANGE + param1 + BURL
+        if(param2 == 0){
+            URL = FURL + YCHANGE + param1 + BURL
+        }else{
+            URL = FURL + VCHANGE + param1 + BURL
+        }
         webview.loadData(URL, "text/html", "charset=utf-8");
 
         alpha_control.setOnSeekBarChangeListener(this)
