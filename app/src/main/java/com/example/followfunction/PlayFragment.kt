@@ -61,7 +61,7 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
     }
     override fun onStopTrackingTouch(p0: SeekBar?) {
     }
-    private val FURL = "<html><body><iframe width=\"1280\" height=\"720\" src=\""
+    private val FURL = "<html><body><iframe width=\"640\" height=\"360\" src=\""
     private val BURL = "\" frameborder=\"0\" allowfullscreen></iframe></html></body>"
     private val YCHANGE = "https://www.youtube.com/embed/"
     private val VCHANGE = "https://player.vimeo.com/video/"
@@ -613,6 +613,7 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
         }else{
             URL = FURL + VCHANGE + param1 + BURL
         }
+        Log.d(TAG, URL)
         webview.loadData(URL, "text/html", "charset=utf-8");
 
         alpha_control.setOnSeekBarChangeListener(this)

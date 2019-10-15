@@ -31,26 +31,31 @@ class FollowFragment : Fragment(), View.OnClickListener {
     override fun onClick(p0: View?) {
         when (p0!!.id){
             R.id.btn_youtube_search -> consume {
-                Log.i(TAG, "search_Btn")
+                mListener!!.sendsection = 1
+                mListener!!.sendtype = 0
+                Log.i(TAG, "btn_youtube_search")
                 onButtonPressed(txtB_youtube_search.text.toString())
                 Log.i(TAG, txtB_youtube_search.text.toString())
-                mListener!!.sendsection = 1
+
             }
             R.id.btn_youtube_url -> consume {
-                mListener!!.showVideo(txtB_youtube_url.text.toString())
                 mListener!!.sendsection = 2
-                Log.i(TAG, "play_Btn")
+                mListener!!.sendtype = 0
+                mListener!!.showVideo(txtB_youtube_url.text.toString().substringAfterLast("/"))
+                Log.i(TAG, "btn_youtube_url")
             }/*
             R.id.btn_vimeo_search -> consume {
                 Log.i(TAG, "search_Btn")
                 onButtonPressed(txtB_vimeo_search.text.toString())
                 Log.i(TAG, txtB_vimeo_search.text.toString())
                 mListener!!.sendsection = 1
+                mListener!!.sendtype = 1f
             }*/
             R.id.btn_vimeo_url -> consume {
-                mListener!!.showVideo(txtB_vimeo_url.text.toString())
                 mListener!!.sendsection = 2
-                Log.i(TAG, "play_Btn")
+                mListener!!.sendtype = 1
+                mListener!!.showVideo(txtB_vimeo_url.text.toString().substringAfterLast("/"))
+                Log.i(TAG, "btn_vimeo_url")
             }
         }
     }
