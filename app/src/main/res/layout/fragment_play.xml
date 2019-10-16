@@ -16,7 +16,7 @@
         android:visibility="invisible" />
 
     <com.example.followfunction.camerause.AutoFitTextureView
-    android:id="@+id/AutoView"
+    android:id="@+id/textureView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_above="@+id/youtube_layout"
@@ -25,7 +25,7 @@
     android:layout_toStartOf="@+id/button_layout"
     android:visibility="visible" />
     <VideoView
-    android:id="@+id/VideoView"
+    android:id="@+id/video_View"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_above="@+id/youtube_layout"
@@ -108,7 +108,7 @@
     </cn.gavinliu.android.lib.scale.ScaleRelativeLayout>
 
     <WebView
-        android:id="@+id/youtube_layout"
+        android:id="@+id/webview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"

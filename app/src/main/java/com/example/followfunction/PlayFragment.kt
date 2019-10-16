@@ -30,12 +30,10 @@ import android.util.SparseIntArray
 import android.view.*
 import android.webkit.WebChromeClient
 import android.webkit.WebSettings
-import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.SeekBar
 import android.widget.Toast
 import android.widget.Toast.LENGTH_SHORT
-import android.widget.VideoView
 import androidx.annotation.NonNull
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.core.app.ActivityCompat
@@ -61,7 +59,7 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
     }
     override fun onStopTrackingTouch(p0: SeekBar?) {
     }
-    private val FURL = "<html><body><iframe width=\"640\" height=\"360\" src=\""
+    private val FURL = "<html><body><iframe width=\"100%\" height=\"100%\" src=\""
     private val BURL = "\" frameborder=\"0\" allowfullscreen></iframe></html></body>"
     private val YCHANGE = "https://www.youtube.com/embed/"
     private val VCHANGE = "https://player.vimeo.com/video/"
@@ -172,9 +170,6 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
 
     }
 
-    lateinit var textureView: AutoFitTextureView
-    lateinit var video_View: VideoView
-    lateinit var webview:WebView
 
 
     private val stateCallback = object : CameraDevice.StateCallback() {
@@ -310,7 +305,7 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
                 webview.setZ(2.toFloat())
             }
         }
-        youtube_layout.onResume()
+        webview.onResume()
     }
 
     override fun onPause() {
@@ -321,7 +316,7 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
         if(videoPlaying){
            videoprogress = video_View.currentPosition
         }
-        youtube_layout.onPause()
+        webview.onPause()
     }
     @SuppressLint("SetJavaScriptEnabled")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -474,6 +469,7 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
             video_View.visibility = View.GONE
             textureView.setZ(0.toFloat())
         }
+        webview.setZ(0.toFloat())
     }
     private fun PortrainSet(){
         LandWebView = ScaleRelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -515,17 +511,15 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
         LandCamera!!.addRule(ScaleRelativeLayout.ALIGN_PARENT_START)
         LandCamera!!.addRule(ScaleRelativeLayout.ALIGN_PARENT_TOP)
         LandCamera!!.addRule(ScaleRelativeLayout.START_OF, R.id.button_layout)
-        LandCamera!!.addRule(ScaleRelativeLayout.ABOVE, R.id.youtube_layout)
+        LandCamera!!.addRule(ScaleRelativeLayout.ABOVE, R.id.webview)
         alpha_control.setVisibility(View.GONE)
         textureView.setLayoutParams(LandCamera)
         video_View.setLayoutParams(LandCamera)
+        webview.setZ(0.toFloat())
     }
     @SuppressLint("SetJavaScriptEnabled")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        textureView = view.findViewById(R.id.AutoView)
-        video_View = view.findViewById(R.id.VideoView)
-        webview = view.findViewById(R.id.youtube_layout)
         cameraId = CAMERA_FRONT
         startBackgroundThread()
         val curOrientation =  requireActivity().windowManager.defaultDisplay.rotation
@@ -599,7 +593,7 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
         viewChange_Btn.setOnClickListener(this)
         webview.setWebChromeClient(WebChromeClient())
         webview.setWebViewClient(WebViewClient())
-        val settings = youtube_layout.getSettings()
+        val settings = webview.getSettings()
         settings.setJavaScriptEnabled(true)
         settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN)
         settings.setJavaScriptCanOpenWindowsAutomatically(true)
@@ -613,7 +607,7 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
         }else{
             URL = FURL + VCHANGE + param1 + BURL
         }
-        Log.d(TAG, URL)
+        Log.d(TAG, URL!!)
         webview.loadData(URL, "text/html", "charset=utf-8");
 
         alpha_control.setOnSeekBarChangeListener(this)
@@ -1097,11 +1091,11 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
                 } else {
                     video_View.visibility = View.GONE
                     textureView.visibility = View.VISIBLE
-                    video_camera = true
                     if (isRecordingVideo) {
                         stopRecordingVideo()
                     }
                     closeCamera()
+                    video_camera = true
                 }
             }
         }

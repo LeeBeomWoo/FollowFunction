@@ -13,8 +13,6 @@ import android.util.Log
 import android.view.Surface
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import cn.gavinliu.android.lib.scale.config.ScaleConfig
 import com.example.followfunction.navigationitem.FollowFragment
 import com.example.followfunction.navigationitem.YouTubeResult
@@ -60,7 +58,6 @@ class MainActivity : AppCompatActivity(), FollowFragment.OnFollowInteraction, Yo
         Log.i(TAG, "onConfigurationChanged_setCameraDisplayOrientation : " + result.toString())
     }
 
-    override lateinit var result_list: RecyclerView
     private val LIST_STATE_KEY:String = "recycler-list-state"
     var listState: Parcelable? = null
     private val TAG: String = "MainActivity-"
@@ -234,22 +231,7 @@ class MainActivity : AppCompatActivity(), FollowFragment.OnFollowInteraction, Yo
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putInt("sectionInt", sectionInt)
-        //Save the fragment's instance
-        if(sectionInt == 1) {
-            val pop_linearLayoutManager = LinearLayoutManager(context)
-            pop_linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL)
-            result_list.layoutManager = pop_linearLayoutManager
-            listState = result_list.layoutManager!!.onSaveInstanceState()
-            outState.putParcelable(LIST_STATE_KEY, listState)
-        }
         outState.putString("sendquery", sendquery)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        if (listState != null) {
-            result_list.layoutManager!!.onRestoreInstanceState(listState)
-        }
     }
 
     override fun onBackPressed() {

@@ -2,6 +2,7 @@ package com.example.followfunction.navigationitem
 
 import android.content.Context
 import android.os.Bundle
+import android.os.Parcelable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -23,10 +24,12 @@ class YouTubeResult : androidx.fragment.app.Fragment() {
     // TODO: Rename and change types of parameters
     val TAG = "YouTubeResult"
     private var mParam1: String? = null
-    private var mParam2: Int = 0
     var adapter: YoutubeResultListViewAdapter? = null
     private var mListener: OnYoutubeResultInteraction? = null
     lateinit var result_list: RecyclerView
+
+    private val LIST_STATE_KEY:String = "recycler-list-state"
+    var listState: Parcelable? = null
     /** Global instance of the max number of videos we want returned (50 = upper limit per page).  */
 
     /** Global instance of Youtube object to make all API requests.  */
@@ -36,7 +39,6 @@ class YouTubeResult : androidx.fragment.app.Fragment() {
         setRetainInstance(true)
         arguments?.let {
             mParam1 = it.getString(ARG_PARAM1)
-            mParam2 = it.getInt(ARG_PARAM1)
         }
     }
 
@@ -48,6 +50,16 @@ class YouTubeResult : androidx.fragment.app.Fragment() {
         return rootvie
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        //Save the fragment's instance
+            val pop_linearLayoutManager = LinearLayoutManager(context)
+            pop_linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL)
+            result_list.layoutManager = pop_linearLayoutManager
+            listState = result_list.layoutManager!!.onSaveInstanceState()
+            outState.putParcelable(LIST_STATE_KEY, listState)
+        outState.putString("sendquery", mListener!!.sendquery!!)
+    }
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         Log.i(TAG, "onActivityCreated")
@@ -77,6 +89,13 @@ class YouTubeResult : androidx.fragment.app.Fragment() {
         })
         Log.i(TAG, result_list.adapter!!.itemCount.toString())
         Log.i(TAG, "onActivityCreated_final")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (listState != null) {
+            result_list.layoutManager!!.onRestoreInstanceState(listState)
+        }
     }
 
     override fun onAttach(context: Context) {
@@ -115,7 +134,6 @@ class YouTubeResult : androidx.fragment.app.Fragment() {
         var sendquery:String?
         suspend fun getNetxtPage(q: String, api_Key: String, max_result: Int, more:Boolean)
         fun showVideo(s: String)
-        var result_list: RecyclerView
     }
 
     companion object {
