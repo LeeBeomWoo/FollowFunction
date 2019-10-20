@@ -34,6 +34,7 @@ class FollowFragment : Fragment(), View.OnClickListener {
                 mListener!!.sendsection = 1
                 mListener!!.sendtype = 0
                 Log.i(TAG, "btn_youtube_search")
+                mListener!!.searchWord = txtB_youtube_search.text.toString()
                 onButtonPressed(txtB_youtube_search.text.toString())
                 Log.i(TAG, txtB_youtube_search.text.toString())
 
@@ -128,6 +129,7 @@ class FollowFragment : Fragment(), View.OnClickListener {
         var sendsection:Int
         var sendtype:Int
         var viideoId:String?
+        var searchWord:String?
     }
     companion object {
         // TODO: Rename parameter arguments, choose names that match

@@ -69,6 +69,7 @@ class MainActivity : AppCompatActivity(), FollowFragment.OnFollowInteraction, Yo
     override val context: Context = this
     override var sendquery:String? = null
     override var viideoId:String? = null
+    override var searchWord:String? = null
     override var sendsection:Int = 0
     override var sendtype:Int = 0 //0은 유튜브, 1은 비메오
     override var data: MutableList<SearchResult> = arrayListOf()
@@ -91,6 +92,7 @@ class MainActivity : AppCompatActivity(), FollowFragment.OnFollowInteraction, Yo
                 listState = savedInstanceState.getParcelable(LIST_STATE_KEY)
             }
             sendquery = savedInstanceState.getString("sendquery")
+            searchWord = savedInstanceState.getString("searchWord")
             Log.i(TAG + "_", "play"+ "\n sendquery :" + sendquery)
         }
         followFragment = supportFragmentManager.findFragmentByTag("follow") as FollowFragment?
@@ -232,6 +234,7 @@ class MainActivity : AppCompatActivity(), FollowFragment.OnFollowInteraction, Yo
         super.onSaveInstanceState(outState)
         outState.putInt("sectionInt", sectionInt)
         outState.putString("sendquery", sendquery)
+        outState.putString("searchWord", searchWord)
     }
 
     override fun onBackPressed() {

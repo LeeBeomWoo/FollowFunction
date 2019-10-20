@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.followfunction.R
 import com.example.followfunction.YoutubeResultListViewAdapter
 import com.google.api.services.youtube.model.SearchResult
+import kotlinx.android.synthetic.main.fragment_follow.*
 import kotlinx.coroutines.runBlocking
 
 
@@ -26,7 +27,6 @@ class YouTubeResult : androidx.fragment.app.Fragment() {
     private var mParam1: String? = null
     var adapter: YoutubeResultListViewAdapter? = null
     private var mListener: OnYoutubeResultInteraction? = null
-    lateinit var result_list: RecyclerView
 
     private val LIST_STATE_KEY:String = "recycler-list-state"
     var listState: Parcelable? = null
@@ -36,30 +36,32 @@ class YouTubeResult : androidx.fragment.app.Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.i(TAG, "onCreate")
         super.onCreate(savedInstanceState)
-        setRetainInstance(true)
         arguments?.let {
             mParam1 = it.getString(ARG_PARAM1)
+            listState = it.getParcelable(LIST_STATE_KEY)
         }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         Log.i(TAG, "onCreateView")
-        val rootvie = inflater.inflate(R.layout.fragment_follow, container, false)
-        result_list = rootvie.findViewById(R.id.result_list)
-        return rootvie
+        runBlocking { mListener!!.getDatas("snippet", mListener!!.searchWord!!, getString(R.string.API_key), 5, true)}
+        return inflater.inflate(R.layout.fragment_follow, container, false)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         //Save the fragment's instance
+        Log.i(TAG, "onSaveInstanceState")
             val pop_linearLayoutManager = LinearLayoutManager(context)
             pop_linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL)
             result_list.layoutManager = pop_linearLayoutManager
             listState = result_list.layoutManager!!.onSaveInstanceState()
             outState.putParcelable(LIST_STATE_KEY, listState)
+        Log.i(TAG, mListener!!.sendquery!!)
         outState.putString("sendquery", mListener!!.sendquery!!)
     }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         Log.i(TAG, "onActivityCreated")
@@ -133,7 +135,9 @@ class YouTubeResult : androidx.fragment.app.Fragment() {
         var totalpage:Int
         var sendquery:String?
         suspend fun getNetxtPage(q: String, api_Key: String, max_result: Int, more:Boolean)
+        suspend fun getDatas(part: String, q: String, api_Key: String, max_result: Int, more:Boolean)
         fun showVideo(s: String)
+        var searchWord:String?
     }
 
     companion object {
