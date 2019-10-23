@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PlayFragment"
+    tools:context="cns.body.followfunction.PlayFragment"
     android:id="@+id/item_mainLayout">
 
     <SeekBar
@@ -15,7 +15,7 @@
         android:layout_alignParentTop="true"
         android:visibility="invisible" />
 
-    <com.example.followfunction.camerause.AutoFitTextureView
+    <cns.body.followfunction.camerause.AutoFitTextureView
     android:id="@+id/textureView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"

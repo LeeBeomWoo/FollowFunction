@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/background"
     android:fitsSystemWindows="true"
-    tools:context=".MainActivity">
+    tools:context="cns.body.followfunction.MainActivity">
     <cn.gavinliu.android.lib.scale.ScaleFrameLayout
         android:id="@+id/root_layout"
         android:layout_width="match_parent"

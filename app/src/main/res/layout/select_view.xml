@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/background"
     android:orientation="vertical"
-    tools:context="com.example.followfunction.navigationitem.FollowFragment">
+    tools:context="com.example.followfunction.cns.example.followfunction.navigationitem.FollowFragment">
 
     <TextView
         android:id="@+id/lbl_youtube_search"
