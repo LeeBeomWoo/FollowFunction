@@ -872,6 +872,7 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
 
         mediaRecorder?.apply {
             setVideoSource(MediaRecorder.VideoSource.SURFACE)
+            setAudioSource(MediaRecorder.AudioSource.CAMCORDER)
             setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
             setOutputFile(nextVideoAbsolutePath)
             setVideoEncodingBitRate(10000000)

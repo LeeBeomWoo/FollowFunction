@@ -3,6 +3,7 @@ package cns.body.followfunction.navigationitem
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -31,19 +32,28 @@ class FollowFragment : Fragment(), View.OnClickListener {
     override fun onClick(p0: View?) {
         when (p0!!.id){
             R.id.btn_youtube_search -> consume {
-                mListener!!.sendsection = 1
-                mListener!!.sendtype = 0
-                Log.i(TAG, "btn_youtube_search")
-                mListener!!.searchWord = txtB_youtube_search.text.toString()
-                onButtonPressed(txtB_youtube_search.text.toString())
-                Log.i(TAG, txtB_youtube_search.text.toString())
-
+                if(TextUtils.isEmpty(txtB_youtube_search.text.toString())){
+                    txtB_youtube_search.error = "유튜브에서 검색하고 싶은 단어를 입력 후 터치하여 주세요";
+                    return;
+                }else {
+                    mListener!!.sendsection = 1
+                    mListener!!.sendtype = 0
+                    Log.i(TAG, "btn_youtube_search")
+                    mListener!!.searchWord = txtB_youtube_search.text.toString()
+                    onButtonPressed(txtB_youtube_search.text.toString())
+                    Log.i(TAG, txtB_youtube_search.text.toString())
+                }
             }
             R.id.btn_youtube_url -> consume {
-                mListener!!.sendsection = 2
-                mListener!!.sendtype = 0
-                mListener!!.showVideo(txtB_youtube_url.text.toString().substringAfterLast("/"))
-                Log.i(TAG, "btn_youtube_url")
+                if(TextUtils.isEmpty(txtB_youtube_url.text.toString())){
+                    txtB_youtube_url.error = "유튜브의 공유하기에서 url을 복사하여 붙여넣어 주세요";
+                    return;
+                }else {
+                    mListener!!.sendsection = 2
+                    mListener!!.sendtype = 0
+                    mListener!!.showVideo(txtB_youtube_url.text.toString().substringAfterLast("/"))
+                    Log.i(TAG, "btn_youtube_url")
+                }
             }/*
             R.id.btn_vimeo_search -> consume {
                 Log.i(TAG, "search_Btn")
@@ -53,10 +63,15 @@ class FollowFragment : Fragment(), View.OnClickListener {
                 mListener!!.sendtype = 1f
             }*/
             R.id.btn_vimeo_url -> consume {
-                mListener!!.sendsection = 2
-                mListener!!.sendtype = 1
-                mListener!!.showVideo(txtB_vimeo_url.text.toString().substringAfterLast("/"))
-                Log.i(TAG, "btn_vimeo_url")
+                if(TextUtils.isEmpty(txtB_vimeo_url.text.toString())){
+                    txtB_vimeo_url.error = "비메오의 공유하기에서 url을 복사하여 붙여넣어 주세요";
+                    return;
+                }else {
+                    mListener!!.sendsection = 2
+                    mListener!!.sendtype = 1
+                    mListener!!.showVideo(txtB_vimeo_url.text.toString().substringAfterLast("/"))
+                    Log.i(TAG, "btn_vimeo_url")
+                }
             }
         }
     }
