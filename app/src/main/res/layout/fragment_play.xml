@@ -7,23 +7,27 @@
     tools:context="cns.body.followfunction.PlayFragment"
     android:id="@+id/item_mainLayout">
 
+    <cns.body.followfunction.camerause.AutoFitTextureView
+        android:id="@+id/textureView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/youtube_layout"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentTop="true"
+        android:layout_toStartOf="@+id/button_layout"
+        android:visibility="visible" />
+
     <SeekBar
         android:id="@+id/alpha_control"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="false"
         android:layout_alignParentTop="true"
-        android:visibility="invisible" />
+        android:layout_alignParentBottom="false"
+        android:progress="50"
+        android:progressTint="#8BC34A"
+        android:visibility="visible"
+        tools:visibility="visible" />
 
-    <cns.body.followfunction.camerause.AutoFitTextureView
-    android:id="@+id/textureView"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_above="@+id/youtube_layout"
-    android:layout_alignParentStart="true"
-    android:layout_alignParentTop="true"
-    android:layout_toStartOf="@+id/button_layout"
-    android:visibility="visible" />
     <VideoView
     android:id="@+id/video_View"
     android:layout_width="match_parent"
@@ -84,7 +88,6 @@
             android:id="@+id/viewChange_Btn"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_below="@+id/record_Btn"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:layout_margin="5dp"
@@ -97,6 +100,7 @@
             android:id="@+id/play_record_Btn"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:layout_below="@+id/record_Btn"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:layout_margin="5dp"

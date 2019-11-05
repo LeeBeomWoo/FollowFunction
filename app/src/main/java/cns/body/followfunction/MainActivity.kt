@@ -25,7 +25,6 @@ import com.google.api.services.youtube.YouTube
 import com.google.api.services.youtube.model.SearchListResponse
 import com.google.api.services.youtube.model.SearchResult
 import com.google.common.io.BaseEncoding
-import kotlinx.android.synthetic.main.fragment_follow.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -247,7 +246,6 @@ class MainActivity : AppCompatActivity(), FollowFragment.OnFollowInteraction, Yo
         outState.putString("sendquery", sendquery)
         outState.putString("searchWord", searchWord)
         if(sectionInt == 1) {
-            listState = result_list.layoutManager!!.onSaveInstanceState()
             outState.putParcelable(LIST_STATE_KEY, listState)
         }
     }
