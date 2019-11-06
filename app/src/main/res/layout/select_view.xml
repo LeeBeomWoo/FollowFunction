@@ -10,66 +10,101 @@
 
     <TextView
         android:id="@+id/lbl_youtube_search"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginTop="5dp"
         android:layout_weight="1"
-        android:background="@drawable/backline"
+        android:background="@drawable/backline_alpha"
         android:gravity="center"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
         android:text="@string/youtube_search"
         android:textAlignment="center"
-        android:textSize="24sp" />
+        android:textAllCaps="true"
+        android:textColor="#FFFFFF"
+        android:textSize="30sp" />
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/BLayout_youtube_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:background="@drawable/backline"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true">
         <EditText
             android:id="@+id/txtB_youtube_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:background="@drawable/backline"
             android:hint="@string/search_text"
             android:inputType="textShortMessage"
             android:textAlignment="center"
             android:textSize="18sp"
-            android:autofillHints="" tools:targetApi="o" />
-
-        <Button
-            android:id="@+id/btn_youtube_search"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_weight="1"
-            android:text="@string/search" />
+            tools:targetApi="o" />
+    </com.google.android.material.textfield.TextInputLayout>
+    <Button
+        android:id="@+id/btn_youtube_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_weight="1"
+        android:background="@drawable/backfill"
+        android:fontFamily="cursive"
+        android:lineSpacingExtra="8sp"
+        android:text="@string/search"
+        android:textColor="#F8F7F7"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:typeface="monospace" />
 
     <TextView
         android:id="@+id/lbl_youtube_url"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_weight="1"
-        android:background="@drawable/backline"
+        android:background="@drawable/backline_alpha"
         android:gravity="center"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
         android:text="@string/youtube_url"
         android:textAlignment="center"
-        android:textSize="24sp" />
-
-        <EditText
-            android:id="@+id/txtB_youtube_url"
+        android:textAllCaps="true"
+        android:textColor="#FFFFFF"
+        android:textSize="30sp" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/BLayout_youtube_url"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:background="@drawable/backline"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true">
+        <EditText
+            android:id="@+id/txtB_youtube_url"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:hint="@string/url_play"
             android:inputType="textUri|textLongMessage"
             android:textAlignment="center"
             android:textSize="18sp"
             android:importantForAutofill="no" />
-
-        <Button
-            android:id="@+id/btn_youtube_url"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_weight="1"
-            android:text="@string/play" />
+        </com.google.android.material.textfield.TextInputLayout>
+    <Button
+        android:id="@+id/btn_youtube_url"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_weight="1"
+        android:background="@drawable/backfill"
+        android:fontFamily="cursive"
+        android:lineSpacingExtra="8sp"
+        android:text="@string/play"
+        android:textColor="#F8F7F7"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:typeface="monospace" />
 <!--
     <TextView
         android:id="@+id/lbl_vimeo_searchl"
@@ -82,6 +117,15 @@
         android:text="@string/vimeo_search"
         android:textAlignment="center"
         android:textSize="24sp" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/BLayout_vimeo_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:background="@drawable/backline"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true">
     <EditText
             android:id="@+id/txtB_vimeo_search"
             android:layout_width="match_parent"
@@ -93,7 +137,7 @@
             android:textAlignment="center"
             android:textSize="18sp"
         android:autofillHints="" tools:targetApi="o" />
-
+    </com.google.android.material.textfield.TextInputLayout>
         <Button
             android:id="@+id/btn_vimeo_search"
             android:layout_width="match_parent"
@@ -104,31 +148,49 @@
 -->
     <TextView
         android:id="@+id/lbl_vimeo_url"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_weight="1"
-        android:background="@drawable/backline"
+        android:background="@drawable/backline_alpha"
         android:gravity="center"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
         android:text="@string/vimeo_url"
         android:textAlignment="center"
-        android:textSize="24sp" />
+        android:textAllCaps="true"
+        android:textColor="#FFFFFF"
+        android:textSize="30sp" />
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/BLayout_vimeo_url"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:background="@drawable/backline"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true">
         <EditText
             android:id="@+id/txtB_vimeo_url"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:background="@drawable/backline"
             android:hint="@string/url_play"
             android:inputType="textUri|textLongMessage"
             android:textAlignment="center"
             android:textSize="18sp"
-            android:autofillHints="" tools:targetApi="o" />
-
-        <Button
-            android:id="@+id/btn_vimeo_url"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/play" />
+            tools:targetApi="o" />
+    </com.google.android.material.textfield.TextInputLayout>
+    <Button
+        android:id="@+id/btn_vimeo_url"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@drawable/backfill"
+        android:fontFamily="cursive"
+        android:lineSpacingExtra="8sp"
+        android:text="@string/play"
+        android:textColor="#F8F7F7"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:typeface="monospace" />
 </cn.gavinliu.android.lib.scale.ScaleLinearLayout>

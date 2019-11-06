@@ -33,7 +33,7 @@ class FollowFragment : Fragment(), View.OnClickListener {
         when (p0!!.id){
             R.id.btn_youtube_search -> consume {
                 if(TextUtils.isEmpty(txtB_youtube_search.text.toString())){
-                    txtB_youtube_search.error = "유튜브에서 검색하고 싶은 단어를 입력 후 터치하여 주세요";
+                    BLayout_youtube_search.error = "유튜브에서 검색하고 싶은 단어를 입력 후 터치하여 주세요";
                     return;
                 }else {
                     mListener!!.sendsection = 1
@@ -46,7 +46,7 @@ class FollowFragment : Fragment(), View.OnClickListener {
             }
             R.id.btn_youtube_url -> consume {
                 if(TextUtils.isEmpty(txtB_youtube_url.text.toString())){
-                    txtB_youtube_url.error = "유튜브의 공유하기에서 url을 복사하여 붙여넣어 주세요";
+                    BLayout_youtube_url.error = "유튜브의 공유하기에서 url을 복사하여 붙여넣어 주세요";
                     return;
                 }else {
                     mListener!!.sendsection = 2
@@ -64,7 +64,7 @@ class FollowFragment : Fragment(), View.OnClickListener {
             }*/
             R.id.btn_vimeo_url -> consume {
                 if(TextUtils.isEmpty(txtB_vimeo_url.text.toString())){
-                    txtB_vimeo_url.error = "비메오의 공유하기에서 url을 복사하여 붙여넣어 주세요";
+                    BLayout_vimeo_url.error = "비메오의 공유하기에서 url을 복사하여 붙여넣어 주세요";
                     return;
                 }else {
                     mListener!!.sendsection = 2

@@ -1,16 +1,13 @@
 package cns.body.followfunction
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.pm.PackageManager
-import android.hardware.Camera
 import android.os.Bundle
 import android.os.Parcelable
 import android.util.Log
-import android.view.Surface
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import cn.gavinliu.android.lib.scale.config.ScaleConfig
@@ -25,40 +22,15 @@ import com.google.api.services.youtube.YouTube
 import com.google.api.services.youtube.model.SearchListResponse
 import com.google.api.services.youtube.model.SearchResult
 import com.google.common.io.BaseEncoding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
 import java.security.MessageDigest
 
+@ObsoleteCoroutinesApi
 class MainActivity : AppCompatActivity(), FollowFragment.OnFollowInteraction, YouTubeResult.OnYoutubeResultInteraction,
     PlayFragment.OnFragmentInteractionListener {
-    override fun setCameraDisplayOrientation(activity: Activity, cameraId: Int, camera: Camera) {
-        val info = Camera.CameraInfo()
-        Camera.getCameraInfo(cameraId, info)
-        val rotation = activity.windowManager.defaultDisplay
-            .rotation
-        var degrees = 0
-        when (rotation) {
-            Surface.ROTATION_0 -> degrees = 0
-            Surface.ROTATION_90 -> degrees = 90
-            Surface.ROTATION_180 -> degrees = 180
-            Surface.ROTATION_270 -> degrees = 270
-        }
-
-        var result: Int
-        if (info.facing === Camera.CameraInfo.CAMERA_FACING_FRONT) {
-            result = (info.orientation + degrees) % 360
-            result = (360 - result) % 360  // compensate the mirror
-        } else {  // back-facing
-            result = (info.orientation - degrees + 360) % 360
-        }
-        camera.setDisplayOrientation(result)
-        Log.i(TAG, "onConfigurationChanged_setCameraDisplayOrientation : " + result.toString())
-    }
 
     private val LIST_STATE_KEY:String = "recycler-list-state"
     private val TAG: String = "MainActivity-"
@@ -199,14 +171,12 @@ class MainActivity : AppCompatActivity(), FollowFragment.OnFollowInteraction, Yo
     }
     override suspend fun getDatas(part: String, q: String, api_Key: String, max_result: Int, more:Boolean) {
         Log.i(TAG, "getDatas")
-        val youTube = YouTube.Builder(NetHttpTransport(), JacksonFactory.getDefaultInstance(), object: HttpRequestInitializer {
-            @Throws(IOException::class)
-            override fun initialize(request:HttpRequest) {
+        val youTube = YouTube.Builder(NetHttpTransport(), JacksonFactory.getDefaultInstance(),
+            HttpRequestInitializer { request ->
                 val SHA1 = getSHA1(packageName)
                 request.headers.set("X-Android-Package", packageName)
                 request.headers.set("X-Android-Cert", SHA1)
-            }
-        }).setApplicationName(packageName).build()
+            }).setApplicationName(packageName).build()
         val searchType = "video"
         val a = q.toString().replace("[", "")
         val b = a.replace("]", "")
@@ -222,7 +192,7 @@ class MainActivity : AppCompatActivity(), FollowFragment.OnFollowInteraction, Yo
         query.order = order
         query.type = searchType
         Log.i("test", "first")
-        CoroutineScope(Dispatchers.Default).launch {addData( query.execute())}.join()
+        CoroutineScope(newSingleThreadContext("MyOwnThread")).launch {addData( query.execute())}.join()
         Log.i("test", "third")
     }
     override fun OnFollowInteraction(q: String, s:Int) {

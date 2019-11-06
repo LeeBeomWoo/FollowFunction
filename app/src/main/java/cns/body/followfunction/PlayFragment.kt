@@ -11,7 +11,6 @@ import android.content.res.Configuration
 import android.graphics.Matrix
 import android.graphics.RectF
 import android.graphics.SurfaceTexture
-import android.hardware.Camera
 import android.hardware.camera2.*
 import android.hardware.camera2.CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP
 import android.hardware.camera2.CameraCharacteristics.SENSOR_ORIENTATION
@@ -205,7 +204,9 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
                         // 메시지 큐에 저장될 메시지의 내용;
                         val a = (progress.toDouble() / 100.0)
                         val b = a.toFloat()
-                        webview.setAlpha(b)
+                        if(webview != null) {
+                            webview.alpha = b
+                        }
                     }
                 })
             }
@@ -284,35 +285,36 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
             0 -> {
                 //. SCREEN_ORIENTATION_PORTRAIT
                 if(video_camera){
-                    video_View.setAlpha((1).toFloat())
+                    video_View.alpha = 1.toFloat()
                 }else{
-                    textureView.setAlpha((1).toFloat())
+                    textureView.alpha = 1.toFloat()
                 }
-                webview.setZ(2.toFloat())
+                webview.z = 2.toFloat()
                 alpha_control.progress = 99
             }
             2 -> {
                 //. SCREEN_ORIENTATION_REVERSE_PORTRAIT
                 if(video_camera){
-                    video_View.setAlpha((1).toFloat())
+                    video_View.alpha = 1.toFloat()
                 }else{
-                    textureView.setAlpha((1).toFloat())
+                    textureView.alpha = 1.toFloat()
                 }
-                webview.setZ(2.toFloat())
+                webview.z = 2.toFloat()
                 alpha_control.progress = 99
             }
             //----------------------------------------
             1 -> {
                 //. SCREEN_ORIENTATION_LANDSCAPE
-                alpha_control.setProgress(50)
-                alpha_control.setZ(0.toFloat())
-                webview.setZ(2.toFloat())
+                alpha_control.progress = 50
+                alpha_control.z = 0.toFloat()
+                webview.z = 2.toFloat()
             }
             //----------------------------------------
             3 -> {
-                alpha_control.setProgress(50)
-                alpha_control.setZ(0.toFloat())
-                webview.setZ(2.toFloat())
+                //. SCREEN_ORIENTATION_REVERSE_LANDSCAPE
+                alpha_control.progress = 50
+                alpha_control.z = 0.toFloat()
+                webview.z = 2.toFloat()
             }
         }
         webview.onResume()
@@ -419,7 +421,6 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
      * for more information.
      */
     interface OnFragmentInteractionListener {
-        fun setCameraDisplayOrientation(activity: Activity, cameraId: Int, camera: Camera)
         val context: Context
     }
     private fun LandSet(){
@@ -518,6 +519,7 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
         }
         alpha_control.z = 0.toFloat()
         webview.z = 0.toFloat()
+        button_layout.z = 0.toFloat()
     }
     private fun PortrainSet(){
         LandWebView = ScaleRelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -601,7 +603,8 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
         alpha_control.setVisibility(View.GONE)
         textureView.setLayoutParams(LandCamera)
         video_View.setLayoutParams(LandCamera)
-        webview.setZ(0.toFloat())
+        webview.z = 0.toFloat()
+        button_layout.z = 0.toFloat()
     }
     @SuppressLint("SetJavaScriptEnabled")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
