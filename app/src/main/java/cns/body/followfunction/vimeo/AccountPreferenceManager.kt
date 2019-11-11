@@ -2,7 +2,7 @@ package cns.body.followfunction.vimeo
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.preference.PreferenceManager
+import android.preference.PreferenceManager.getDefaultSharedPreferences
 import com.vimeo.networking.model.User
 import com.vimeo.networking.model.VimeoAccount
 import com.vimeo.networking.utils.VimeoNetworkUtil
@@ -12,7 +12,7 @@ object AccountPreferenceManager {
 
     @Synchronized
     fun initializeInstance(context: Context) {
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+        sharedPreferences = getDefaultSharedPreferences(context)
     }
 
     // <editor-fold desc="Account">

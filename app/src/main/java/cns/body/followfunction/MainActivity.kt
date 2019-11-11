@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package cns.body.followfunction
 
 import android.annotation.SuppressLint
@@ -5,6 +7,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.pm.PackageManager
+import android.content.pm.PackageManager.GET_SIGNATURES
 import android.os.Bundle
 import android.os.Parcelable
 import android.util.Log
@@ -28,7 +31,6 @@ import java.io.IOException
 import java.io.InputStreamReader
 import java.security.MessageDigest
 
-@ObsoleteCoroutinesApi
 class MainActivity : AppCompatActivity(), FollowFragment.OnFollowInteraction, YouTubeResult.OnYoutubeResultInteraction,
     PlayFragment.OnFragmentInteractionListener {
 
@@ -155,7 +157,10 @@ class MainActivity : AppCompatActivity(), FollowFragment.OnFollowInteraction, Yo
     private fun getSHA1(packageName:String):String? {
         try
         {
-            val signatures = context.packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES).signatures
+            val signatures = context.packageManager.getPackageInfo(
+                packageName,
+                GET_SIGNATURES
+            ).signatures
             for (signature in signatures)
             {
                 val md: MessageDigest = MessageDigest.getInstance("SHA-1")
@@ -178,7 +183,7 @@ class MainActivity : AppCompatActivity(), FollowFragment.OnFollowInteraction, Yo
                 request.headers.set("X-Android-Cert", SHA1)
             }).setApplicationName(packageName).build()
         val searchType = "video"
-        val a = q.toString().replace("[", "")
+        val a = q.replace("[", "")
         val b = a.replace("]", "")
         val order = "relevance"
         val query = youTube.search().list("id, snippet")

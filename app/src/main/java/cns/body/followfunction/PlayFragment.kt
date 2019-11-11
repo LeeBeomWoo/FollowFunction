@@ -5,7 +5,6 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.content.res.Configuration
 import android.graphics.Matrix
@@ -16,11 +15,12 @@ import android.hardware.camera2.CameraCharacteristics.SCALER_STREAM_CONFIGURATIO
 import android.hardware.camera2.CameraCharacteristics.SENSOR_ORIENTATION
 import android.hardware.camera2.CameraDevice.TEMPLATE_PREVIEW
 import android.hardware.camera2.CameraDevice.TEMPLATE_RECORD
-import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.os.Environment.DIRECTORY_MOVIES
+import android.os.Environment.getExternalStoragePublicDirectory
 import android.os.Handler
 import android.os.HandlerThread
 import android.util.Log
@@ -89,9 +89,9 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
     var youtubePlaying:Boolean = false
     var videoprogress:Int = 0
     var videoPlaying:Boolean = false
-    var video_camera:Boolean = false //false = camera, true = video
+    var video_camera:Boolean = true //false = video, true = camera
     var videoPath:String = ""
-    var rotationListener: rotationListenerHelper? = null;
+    var rotationListener: rotationListenerHelper? = null
 
     private lateinit var cameraId: String
 
@@ -199,7 +199,7 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
         Thread(object:Runnable {
             override fun run() {
                 // 현재 UI 스레드가 아니기 때문에 메시지 큐에 Runnable을 등록 함
-                getActivity()!!.runOnUiThread(object:Runnable {
+                activity!!.runOnUiThread(object:Runnable {
                     override fun run() {
                         // 메시지 큐에 저장될 메시지의 내용;
                         val a = (progress.toDouble() / 100.0)
@@ -232,7 +232,7 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d(TAG, "onCreate")
-        setRetainInstance(true)
+        retainInstance = true
         if(savedInstanceState != null){
             Log.i(TAG, "onCreate savedInstanceState")
             param1 = savedInstanceState.getString(ARG_PARAM1)
@@ -244,11 +244,11 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
             }
         }
         val state = Environment.getExternalStorageState()
-        if ( Environment.MEDIA_MOUNTED.equals(state) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(state) ) {  // we can read the External Storage...
+        if ( Environment.MEDIA_MOUNTED == state || Environment.MEDIA_MOUNTED_READ_ONLY == state) {  // we can read the External Storage...
             //Retrieve the primary External Storage:
-            baseDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES).path
+            baseDir = getExternalStoragePublicDirectory(DIRECTORY_MOVIES).path
         }else{
-            baseDir = Environment.DIRECTORY_MOVIES
+            baseDir = DIRECTORY_MOVIES
         }
     }
 
@@ -378,12 +378,12 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        Log.d(TAG, "onActivityResult");
-        Log.d("requestCode", requestCode.toString());
-        Log.d("resultCode", resultCode.toString());
+        Log.d(TAG, "onActivityResult")
+        Log.d("requestCode", requestCode.toString())
+        Log.d("resultCode", resultCode.toString())
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == 3 && data != null) {
-                val mVideoURI = data.getData()
+                val mVideoURI = data.data
                 videoPath = mVideoURI.toString()
                 Log.d("onActivityResult", mVideoURI.toString())
                 Log.d("Result videoString", videoPath)
@@ -424,73 +424,83 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
         val context: Context
     }
     private fun LandSet(){
-        LandWebView = ScaleRelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        LandButton = ScaleRelativeLayout.LayoutParams(getResources().getDimensionPixelSize(R.dimen.portlaneimageBtnsize_item), ViewGroup.LayoutParams.MATCH_PARENT);
-        LandCamera = ScaleRelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        playlayout = ScaleRelativeLayout.LayoutParams(getResources().getDimensionPixelSize(R.dimen.imageBtnsize_item), getResources().getDimensionPixelSize(
+        LandWebView = ScaleRelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+        LandButton = ScaleRelativeLayout.LayoutParams(resources.getDimensionPixelSize(R.dimen.portlaneimageBtnsize_item), ViewGroup.LayoutParams.MATCH_PARENT)
+        LandCamera = ScaleRelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+        playlayout = ScaleRelativeLayout.LayoutParams(
+            resources.getDimensionPixelSize(R.dimen.imageBtnsize_item), resources.getDimensionPixelSize(
             R.dimen.imageBtnsize_item
-        ));
-        recordlayout = ScaleRelativeLayout.LayoutParams(getResources().getDimensionPixelSize(R.dimen.imageBtnsize_item), getResources().getDimensionPixelSize(
+        ))
+        recordlayout = ScaleRelativeLayout.LayoutParams(
+            resources.getDimensionPixelSize(R.dimen.imageBtnsize_item), resources.getDimensionPixelSize(
             R.dimen.imageBtnsize_item
-        ));
-        switchlayout = ScaleRelativeLayout.LayoutParams(getResources().getDimensionPixelSize(R.dimen.imageBtnsize_item), getResources().getDimensionPixelSize(
+        ))
+        switchlayout = ScaleRelativeLayout.LayoutParams(
+            resources.getDimensionPixelSize(R.dimen.imageBtnsize_item), resources.getDimensionPixelSize(
             R.dimen.imageBtnsize_item
-        ));
-        play_recordlayout = ScaleRelativeLayout.LayoutParams(getResources().getDimensionPixelSize(
+        ))
+        play_recordlayout = ScaleRelativeLayout.LayoutParams(
+            resources.getDimensionPixelSize(
             R.dimen.imageBtnsize_item
-        ), getResources().getDimensionPixelSize(R.dimen.imageBtnsize_item));
-        loadlayout = ScaleRelativeLayout.LayoutParams(getResources().getDimensionPixelSize(R.dimen.imageBtnsize_item), getResources().getDimensionPixelSize(
+        ), resources.getDimensionPixelSize(R.dimen.imageBtnsize_item))
+        loadlayout = ScaleRelativeLayout.LayoutParams(
+            resources.getDimensionPixelSize(R.dimen.imageBtnsize_item), resources.getDimensionPixelSize(
             R.dimen.imageBtnsize_item
-        ));
-        val seek = ScaleRelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        LandButton!!.addRule(ScaleRelativeLayout.ALIGN_PARENT_TOP);
-        LandButton!!.addRule(ScaleRelativeLayout.ALIGN_PARENT_START);
-        button_layout.setLayoutParams(LandButton);
-        seek.addRule(ScaleRelativeLayout.ALIGN_PARENT_END);
-        seek.addRule(ScaleRelativeLayout.END_OF, R.id.button_layout);
-        alpha_control.setLayoutParams(seek);
-        playlayout!!.addRule(ScaleRelativeLayout.ALIGN_PARENT_BOTTOM);
-        playlayout!!.addRule(ScaleRelativeLayout.CENTER_VERTICAL);
-        playlayout!!.setMargins(getResources().getDimensionPixelSize(R.dimen.imageBtnmargine_item), getResources().getDimensionPixelSize(
+        ))
+        val seek = ScaleRelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        LandButton!!.addRule(ScaleRelativeLayout.ALIGN_PARENT_TOP)
+        LandButton!!.addRule(ScaleRelativeLayout.ALIGN_PARENT_START)
+        button_layout.layoutParams = LandButton
+        seek.addRule(ScaleRelativeLayout.ALIGN_PARENT_END)
+        seek.addRule(ScaleRelativeLayout.END_OF, R.id.button_layout)
+        alpha_control.layoutParams = seek
+        playlayout!!.addRule(ScaleRelativeLayout.ALIGN_PARENT_BOTTOM)
+        playlayout!!.addRule(ScaleRelativeLayout.CENTER_VERTICAL)
+        playlayout!!.setMargins(
+            resources.getDimensionPixelSize(R.dimen.imageBtnmargine_item), resources.getDimensionPixelSize(
             R.dimen.imageBtnmargine_item
-        ), getResources().getDimensionPixelSize(R.dimen.imageBtnmargine_item), getResources().getDimensionPixelSize(
+        ), resources.getDimensionPixelSize(R.dimen.imageBtnmargine_item), resources.getDimensionPixelSize(
             R.dimen.imageBtnmargine_item
-        ));
-        load_Btn.setLayoutParams(playlayout);
-        recordlayout!!.setMargins(getResources().getDimensionPixelSize(R.dimen.imageBtnmargine_item), getResources().getDimensionPixelSize(
+        ))
+        load_Btn.layoutParams = playlayout
+        recordlayout!!.setMargins(
+            resources.getDimensionPixelSize(R.dimen.imageBtnmargine_item), resources.getDimensionPixelSize(
             R.dimen.imageBtnmargine_item
-        ), getResources().getDimensionPixelSize(R.dimen.imageBtnmargine_item), getResources().getDimensionPixelSize(
+        ), resources.getDimensionPixelSize(R.dimen.imageBtnmargine_item), resources.getDimensionPixelSize(
             R.dimen.imageBtnmargine_item
-        ));
-        recordlayout!!.addRule(ScaleRelativeLayout.ALIGN_PARENT_TOP);
-        recordlayout!!.addRule(ScaleRelativeLayout.CENTER_VERTICAL);
-        record_Btn.setLayoutParams(recordlayout);
-        loadlayout!!.addRule(ScaleRelativeLayout.ABOVE, R.id.load_Btn);
-        loadlayout!!.addRule(ScaleRelativeLayout.CENTER_VERTICAL);
-        loadlayout!!.setMargins(getResources().getDimensionPixelSize(R.dimen.imageBtnmargine_item), getResources().getDimensionPixelSize(
+        ))
+        recordlayout!!.addRule(ScaleRelativeLayout.ALIGN_PARENT_TOP)
+        recordlayout!!.addRule(ScaleRelativeLayout.CENTER_VERTICAL)
+        record_Btn.layoutParams = recordlayout
+        loadlayout!!.addRule(ScaleRelativeLayout.ABOVE, R.id.load_Btn)
+        loadlayout!!.addRule(ScaleRelativeLayout.CENTER_VERTICAL)
+        loadlayout!!.setMargins(
+            resources.getDimensionPixelSize(R.dimen.imageBtnmargine_item), resources.getDimensionPixelSize(
             R.dimen.imageBtnmargine_item
-        ), getResources().getDimensionPixelSize(R.dimen.imageBtnmargine_item), getResources().getDimensionPixelSize(
+        ), resources.getDimensionPixelSize(R.dimen.imageBtnmargine_item), resources.getDimensionPixelSize(
             R.dimen.imageBtnmargine_item
-        ));
-        play_Btn.setLayoutParams(loadlayout);
+        ))
+        play_Btn.layoutParams = loadlayout
         play_recordlayout!!.addRule(ScaleRelativeLayout.CENTER_VERTICAL)
-        play_recordlayout!!.setMargins(getResources().getDimensionPixelSize(R.dimen.imageBtnmargine_item), getResources().getDimensionPixelSize(
+        play_recordlayout!!.setMargins(
+            resources.getDimensionPixelSize(R.dimen.imageBtnmargine_item), resources.getDimensionPixelSize(
             R.dimen.imageBtnmargine_item
-        ), getResources().getDimensionPixelSize(R.dimen.imageBtnmargine_item), getResources().getDimensionPixelSize(
+        ), resources.getDimensionPixelSize(R.dimen.imageBtnmargine_item), resources.getDimensionPixelSize(
             R.dimen.imageBtnmargine_item
-        ));
+        ))
         play_recordlayout!!.addRule(ScaleRelativeLayout.CENTER_HORIZONTAL)
-        viewChange_Btn.setLayoutParams(play_recordlayout);
+        viewChange_Btn.layoutParams = play_recordlayout
         switchlayout!!.addRule(ScaleRelativeLayout.BELOW,
             R.id.record_Btn
         )
         switchlayout!!.addRule(ScaleRelativeLayout.CENTER_VERTICAL)
-        switchlayout!!.setMargins(getResources().getDimensionPixelSize(R.dimen.imageBtnmargine_item), getResources().getDimensionPixelSize(
+        switchlayout!!.setMargins(
+            resources.getDimensionPixelSize(R.dimen.imageBtnmargine_item), resources.getDimensionPixelSize(
             R.dimen.imageBtnmargine_item
-        ), getResources().getDimensionPixelSize(R.dimen.imageBtnmargine_item), getResources().getDimensionPixelSize(
+        ), resources.getDimensionPixelSize(R.dimen.imageBtnmargine_item), resources.getDimensionPixelSize(
             R.dimen.imageBtnmargine_item
         ))
-        play_record_Btn.setLayoutParams(switchlayout);
+        play_record_Btn.layoutParams = switchlayout
         LandCamera!!.addRule(ScaleRelativeLayout.END_OF,
             R.id.button_layout
         )
@@ -504,9 +514,9 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
             R.id.button_layout
         )
         LandWebView!!.addRule(ScaleRelativeLayout.ALIGN_PARENT_BOTTOM)
-        webview.setLayoutParams(LandWebView)
-        video_View.setLayoutParams(LandCamera)
-        textureView.setLayoutParams(LandCamera)
+        webview.layoutParams = LandWebView
+        video_View.layoutParams = LandCamera
+        textureView.layoutParams = LandCamera
         alpha_control.visibility = View.VISIBLE
         if(video_camera){
             video_View.visibility = View.VISIBLE
@@ -522,87 +532,98 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
         button_layout.z = 0.toFloat()
     }
     private fun PortrainSet(){
-        LandWebView = ScaleRelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        LandButton = ScaleRelativeLayout.LayoutParams(getResources().getDimensionPixelSize(R.dimen.portwidthbtn), getResources().getDimensionPixelSize(
+        LandWebView = ScaleRelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+        LandButton = ScaleRelativeLayout.LayoutParams(
+            resources.getDimensionPixelSize(R.dimen.portwidthbtn), resources.getDimensionPixelSize(
             R.dimen.portbtn
-        ));
-        LandCamera = ScaleRelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        playlayout = ScaleRelativeLayout.LayoutParams(getResources().getDimensionPixelSize(R.dimen.portlaneimageBtnsize_item), getResources().getDimensionPixelSize(
+        ))
+        LandCamera = ScaleRelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+        playlayout = ScaleRelativeLayout.LayoutParams(
+            resources.getDimensionPixelSize(R.dimen.portlaneimageBtnsize_item), resources.getDimensionPixelSize(
             R.dimen.portlaneimageBtnsize_item
-        ));
-        recordlayout = ScaleRelativeLayout.LayoutParams(getResources().getDimensionPixelSize(R.dimen.portlaneimageBtnsize_item), getResources().getDimensionPixelSize(
+        ))
+        recordlayout = ScaleRelativeLayout.LayoutParams(
+            resources.getDimensionPixelSize(R.dimen.portlaneimageBtnsize_item), resources.getDimensionPixelSize(
             R.dimen.portlaneimageBtnsize_item
-        ));
-        switchlayout = ScaleRelativeLayout.LayoutParams(getResources().getDimensionPixelSize(R.dimen.portlaneimageBtnsize_item), getResources().getDimensionPixelSize(
+        ))
+        switchlayout = ScaleRelativeLayout.LayoutParams(
+            resources.getDimensionPixelSize(R.dimen.portlaneimageBtnsize_item), resources.getDimensionPixelSize(
             R.dimen.portlaneimageBtnsize_item
-        ));
-        play_recordlayout = ScaleRelativeLayout.LayoutParams(getResources().getDimensionPixelSize(
+        ))
+        play_recordlayout = ScaleRelativeLayout.LayoutParams(
+            resources.getDimensionPixelSize(
             R.dimen.portlaneimageBtnsize_item
-        ), getResources().getDimensionPixelSize(R.dimen.portlaneimageBtnsize_item));
-        loadlayout = ScaleRelativeLayout.LayoutParams(getResources().getDimensionPixelSize(R.dimen.portlaneimageBtnsize_item), getResources().getDimensionPixelSize(
+        ), resources.getDimensionPixelSize(R.dimen.portlaneimageBtnsize_item))
+        loadlayout = ScaleRelativeLayout.LayoutParams(
+            resources.getDimensionPixelSize(R.dimen.portlaneimageBtnsize_item), resources.getDimensionPixelSize(
             R.dimen.portlaneimageBtnsize_item
-        ));
+        ))
         LandButton!!.addRule(ScaleRelativeLayout.ALIGN_PARENT_END)
         LandButton!!.addRule(ScaleRelativeLayout.ALIGN_PARENT_TOP)
-        button_layout.setLayoutParams(LandButton);
+        button_layout.layoutParams = LandButton
         LandWebView!!.addRule(ScaleRelativeLayout.ALIGN_PARENT_START)
         LandWebView!!.addRule(ScaleRelativeLayout.ALIGN_PARENT_END)
         LandWebView!!.addRule(ScaleRelativeLayout.ALIGN_PARENT_BOTTOM)
         LandWebView!!.addRule(ScaleRelativeLayout.BELOW,
             R.id.button_layout
         )
-        webview.setLayoutParams(LandWebView)
+        webview.layoutParams = LandWebView
         playlayout!!.addRule(ScaleRelativeLayout.ALIGN_PARENT_BOTTOM)
         playlayout!!.addRule(ScaleRelativeLayout.CENTER_HORIZONTAL)
-        playlayout!!.setMargins(getResources().getDimensionPixelSize(R.dimen.imageBtnmargine_item), getResources().getDimensionPixelSize(
+        playlayout!!.setMargins(
+            resources.getDimensionPixelSize(R.dimen.imageBtnmargine_item), resources.getDimensionPixelSize(
             R.dimen.imageBtnmargine_item
-        ), getResources().getDimensionPixelSize(R.dimen.imageBtnmargine_item), getResources().getDimensionPixelSize(
+        ), resources.getDimensionPixelSize(R.dimen.imageBtnmargine_item), resources.getDimensionPixelSize(
             R.dimen.imageBtnmargine_item
-        ));
-        load_Btn.setLayoutParams(playlayout);
-        recordlayout!!.setMargins(getResources().getDimensionPixelSize(R.dimen.imageBtnmargine_item), getResources().getDimensionPixelSize(
+        ))
+        load_Btn.layoutParams = playlayout
+        recordlayout!!.setMargins(
+            resources.getDimensionPixelSize(R.dimen.imageBtnmargine_item), resources.getDimensionPixelSize(
             R.dimen.imageBtnmargine_item
-        ), getResources().getDimensionPixelSize(R.dimen.imageBtnmargine_item), getResources().getDimensionPixelSize(
+        ), resources.getDimensionPixelSize(R.dimen.imageBtnmargine_item), resources.getDimensionPixelSize(
             R.dimen.imageBtnmargine_item
         ))
         recordlayout!!.addRule(ScaleRelativeLayout.ALIGN_PARENT_TOP)
         recordlayout!!.addRule(ScaleRelativeLayout.CENTER_HORIZONTAL)
-        record_Btn.setLayoutParams(recordlayout)
+        record_Btn.layoutParams = recordlayout
         loadlayout!!.addRule(ScaleRelativeLayout.ABOVE, R.id.load_Btn)
         loadlayout!!.addRule(ScaleRelativeLayout.CENTER_HORIZONTAL)
-        loadlayout!!.setMargins(getResources().getDimensionPixelSize(R.dimen.imageBtnmargine_item), getResources().getDimensionPixelSize(
+        loadlayout!!.setMargins(
+            resources.getDimensionPixelSize(R.dimen.imageBtnmargine_item), resources.getDimensionPixelSize(
             R.dimen.imageBtnmargine_item
-        ), getResources().getDimensionPixelSize(R.dimen.imageBtnmargine_item), getResources().getDimensionPixelSize(
+        ), resources.getDimensionPixelSize(R.dimen.imageBtnmargine_item), resources.getDimensionPixelSize(
             R.dimen.imageBtnmargine_item
         ))
-        play_Btn.setLayoutParams(loadlayout)
+        play_Btn.layoutParams = loadlayout
         play_recordlayout!!.addRule(ScaleRelativeLayout.CENTER_VERTICAL)
         play_recordlayout!!.addRule(ScaleRelativeLayout.CENTER_HORIZONTAL)
-        play_recordlayout!!.setMargins(getResources().getDimensionPixelSize(R.dimen.imageBtnmargine_item), getResources().getDimensionPixelSize(
+        play_recordlayout!!.setMargins(
+            resources.getDimensionPixelSize(R.dimen.imageBtnmargine_item), resources.getDimensionPixelSize(
             R.dimen.imageBtnmargine_item
-        ), getResources().getDimensionPixelSize(R.dimen.imageBtnmargine_item), getResources().getDimensionPixelSize(
+        ), resources.getDimensionPixelSize(R.dimen.imageBtnmargine_item), resources.getDimensionPixelSize(
             R.dimen.imageBtnmargine_item
         ))
-        viewChange_Btn.setLayoutParams(play_recordlayout)
+        viewChange_Btn.layoutParams = play_recordlayout
         switchlayout!!.addRule(ScaleRelativeLayout.BELOW,
             R.id.record_Btn
         )
         switchlayout!!.addRule(ScaleRelativeLayout.CENTER_HORIZONTAL)
-        switchlayout!!.setMargins(getResources().getDimensionPixelSize(R.dimen.imageBtnmargine_item), getResources().getDimensionPixelSize(
+        switchlayout!!.setMargins(
+            resources.getDimensionPixelSize(R.dimen.imageBtnmargine_item), resources.getDimensionPixelSize(
             R.dimen.imageBtnmargine_item
-        ), getResources().getDimensionPixelSize(R.dimen.imageBtnmargine_item), getResources().getDimensionPixelSize(
+        ), resources.getDimensionPixelSize(R.dimen.imageBtnmargine_item), resources.getDimensionPixelSize(
             R.dimen.imageBtnmargine_item
         ))
-        play_record_Btn.setLayoutParams(switchlayout)
+        play_record_Btn.layoutParams = switchlayout
         LandCamera!!.addRule(ScaleRelativeLayout.ALIGN_PARENT_START)
         LandCamera!!.addRule(ScaleRelativeLayout.ALIGN_PARENT_TOP)
         LandCamera!!.addRule(ScaleRelativeLayout.START_OF,
             R.id.button_layout
         )
         LandCamera!!.addRule(ScaleRelativeLayout.ABOVE, R.id.webview)
-        alpha_control.setVisibility(View.GONE)
-        textureView.setLayoutParams(LandCamera)
-        video_View.setLayoutParams(LandCamera)
+        alpha_control.visibility = View.GONE
+        textureView.layoutParams = LandCamera
+        video_View.layoutParams = LandCamera
         webview.z = 0.toFloat()
         button_layout.z = 0.toFloat()
     }
@@ -647,7 +668,7 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
         rotationListener!!.listen(this.requireContext(), object :
             rotationCallbackFn {
             override fun onRotationChanged(lastRotation: Int, newRotation: Int) {
-                Log.d(TAG, "onRotationChanged: last " + (lastRotation) +"  new " + (newRotation));
+                Log.d(TAG, "onRotationChanged: last " + (lastRotation) +"  new " + (newRotation))
                 /**
                  * no need to recreate activity if screen rotate from portrait to landscape
                  * android do the job in order to reload resources
@@ -665,12 +686,12 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
         alpha_control.setOnSeekBarChangeListener(this)
         if(video_camera){
             if(videoPath == ""){
-                val intent = Intent(Intent.ACTION_GET_CONTENT);
-                val uri = Uri.parse(Environment.getExternalStoragePublicDirectory("DIRECTORY_MOVIES").getPath() + File.separator + "bodygation" + File.separator);
-                intent.setType("video/mp4");
+                val intent = Intent(Intent.ACTION_GET_CONTENT)
+                val uri = Uri.parse(getExternalStoragePublicDirectory(DIRECTORY_MOVIES).path + File.separator + "bodygation" + File.separator)
+                intent.type = "video/mp4"
                 intent.putExtra(Intent.EXTRA_STREAM, uri)
                 startActivityForResult(Intent.createChooser(intent, "Select Video"), 3)
-                Log.i(TAG, "videoPath : " + videoPath)
+                Log.i(TAG, "videoPath : $videoPath")
             }
         }
     }
@@ -681,32 +702,28 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
         play_Btn.setOnClickListener(this)
         play_record_Btn.setOnClickListener(this)
         viewChange_Btn.setOnClickListener(this)
-        webview.setWebChromeClient(WebChromeClient())
-        webview.setWebViewClient(WebViewClient())
-        val settings = webview.getSettings()
-        settings.setJavaScriptEnabled(true)
-        settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN)
-        settings.setJavaScriptCanOpenWindowsAutomatically(true)
-        settings.setPluginState(WebSettings.PluginState.ON)
-        settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK)
+        webview.webChromeClient = WebChromeClient()
+        webview.webViewClient = WebViewClient()
+        val settings = webview.settings
+        settings.javaScriptEnabled = true
+        settings.javaScriptCanOpenWindowsAutomatically = true
+        settings.cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
         settings.setSupportMultipleWindows(true)
-        settings.setLoadWithOverviewMode(true)
-        settings.setUseWideViewPort(true)
+        settings.loadWithOverviewMode = true
+        settings.useWideViewPort = true
         if(param2 == 0){
             URL = FURL + YCHANGE + param1 + BURL
         }else{
             URL = FURL + VCHANGE + param1 + BURL
         }
         Log.d(TAG, URL!!)
-        webview.loadData(URL, "text/html", "charset=utf-8");
+        webview.loadData(URL, "text/html", "charset=utf-8")
 
         alpha_control.setOnSeekBarChangeListener(this)
-        video_View.setOnCompletionListener(object :MediaPlayer.OnCompletionListener{
-            override fun onCompletion(p0: MediaPlayer?) {
-                video_View.seekTo(100)
-                play_Btn.setImageResource(R.drawable.play)
-            }
-        })
+        video_View.setOnCompletionListener {
+            video_View.seekTo(100)
+            play_Btn.setImageResource(R.drawable.play)
+        }
     }
 
     @SuppressLint("MissingPermission")
@@ -760,14 +777,14 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
     fun switchCamera() {
         if(!video_camera) {
             if (cameraId.equals(CAMERA_FRONT)) {
-                cameraId = CAMERA_BACK;
+                cameraId = CAMERA_BACK
                 closeCamera()
                 openCamera(textureView.width, textureView.height)
                 play_record_Btn.setImageDrawable(getDrawable(this.requireActivity(),
                     R.drawable.backcamera
                 ))
             } else if (cameraId.equals(CAMERA_BACK)) {
-                cameraId = CAMERA_FRONT;
+                cameraId = CAMERA_FRONT
                 closeCamera()
                 openCamera(textureView.width, textureView.height)
                 play_record_Btn.setImageDrawable(getDrawable(this.requireActivity(),
@@ -849,7 +866,7 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
      */
     private fun startBackgroundThread() {
         backgroundThread = HandlerThread("CameraBackground").also { it.start() }
-        backgroundHandler = Handler(backgroundThread?.looper)
+        backgroundHandler = Handler(backgroundThread!!.looper)
     }
 
     /**
@@ -899,7 +916,7 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
         videoPlaying = false
         if (cameraDevice == null || !textureView.isAvailable) return
         try {
-            record_Btn.setImageResource(R.drawable.record);
+            record_Btn.setImageResource(R.drawable.record)
             closePreviewSession()
             setUpMediaRecorder()
             val texture = textureView.surfaceTexture.apply {
@@ -955,7 +972,7 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
 
     private fun stopRecordingVideo() {
         isRecordingVideo = false
-        record_Btn.setImageResource(R.drawable.stop);
+        record_Btn.setImageResource(R.drawable.stop)
         record_Btn.setImageDrawable(getDrawable(this.requireActivity(),
             R.drawable.record
         ))
@@ -1079,28 +1096,28 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
     @NonNull
     fun getVideoFilePath() :String{
         val state = Environment.getExternalStorageState()
-        var myDir = ""
+        var myDir: String
         if (ContextCompat.checkSelfPermission(this.requireActivity(), // request permission when it is not granted.
                         Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
+                != PERMISSION_GRANTED) {
             Log.d("myAppName", "permission:WRITE_EXTERNAL_STORAGE: NOT granted!")
             // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this.requireActivity(),
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                // Show an expanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-            } else {
+            if (!ActivityCompat.shouldShowRequestPermissionRationale(this.requireActivity(),
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            ) {
                 // No explanation needed, we can request the permission.
                 ActivityCompat.requestPermissions(this.requireActivity(),
-                        VIDEO_PERMISSIONS,1
+                    VIDEO_PERMISSIONS,1
                 )
                 // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
                 // app-defined int constant. The callback method gets the
                 // result of the request.
             }
+            // Show an expanation to the user *asynchronously* -- don't block
+            // this thread waiting for the user's response! After the user
+            // sees the explanation, try again to request the permission.
         }
-        if ( Environment.MEDIA_MOUNTED.equals(state) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(state) ) {  // we can read the External Storage...
+        if ( Environment.MEDIA_MOUNTED == state || Environment.MEDIA_MOUNTED_READ_ONLY == state) {  // we can read the External Storage...
 
             myDir = baseDir + File.separator + "bodygation" + File.separator
             if(!File(myDir).exists()) {
@@ -1122,7 +1139,7 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
     }
 
     override fun onClick(v:View) {
-        when (v.getId()) {
+        when (v.id) {
             R.id.record_Btn ->//녹화
             {
                 if(video_camera) {
@@ -1168,9 +1185,9 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
                     textureView.visibility = View.GONE
                     video_camera = true
                 }
-                val intent = Intent(Intent.ACTION_GET_CONTENT);
-                val uri = Uri.parse(Environment.getExternalStoragePublicDirectory("DIRECTORY_MOVIES").getPath() + File.separator + "bodygation" + File.separator);
-                intent.setType("video/mp4");
+                val intent = Intent(Intent.ACTION_GET_CONTENT)
+                val uri = Uri.parse(getExternalStoragePublicDirectory(DIRECTORY_MOVIES).path + File.separator + "bodygation" + File.separator)
+                intent.type = "video/mp4"
                 intent.putExtra(Intent.EXTRA_STREAM, uri)
                 startActivityForResult(Intent.createChooser(intent, "Select Video"), 3)
                 Log.i(TAG, "videoPath : " + videoPath)
@@ -1178,7 +1195,7 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
 
             R.id.play_record_Btn//전후면 카메라변환
             -> {
-                Log.d(TAG, "viewChange_Btn thouch");
+                Log.d(TAG, "viewChange_Btn thouch")
                 switchCamera()
             }
 

@@ -15,19 +15,8 @@ import com.example.followfunction.R.string
 import kotlinx.android.synthetic.main.select_view.*
 import kotlinx.coroutines.runBlocking
 
-
-/**
- * A simple [Fragment] subclass.
- * Activities that contain this fragment must implement the
- * [FollowFragment.OnFragmentInteractionListener] interface
- * to handle interaction events.
- * Use the [FollowFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-private const val ARG_PARAM1 = "img"
 class FollowFragment : Fragment(), View.OnClickListener {
-    val TAG = "FollowFragment"
-    lateinit var mParam1: String
+    private val TAG = "FollowFragment"
     @SuppressLint("RestrictedApi")
     override fun onClick(p0: View?) {
         when (p0!!.id){
@@ -117,7 +106,7 @@ class FollowFragment : Fragment(), View.OnClickListener {
         if (context is OnFollowInteraction) {
             mListener = context
         } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
+            throw RuntimeException("$context must implement OnFragmentInteractionListener")
         }
     }
 
