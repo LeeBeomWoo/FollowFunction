@@ -1,6 +1,5 @@
 package cns.body.followfunction.navigationitem
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.text.TextUtils
@@ -14,33 +13,36 @@ import com.example.followfunction.R.layout
 import com.example.followfunction.R.string
 import kotlinx.android.synthetic.main.select_view.*
 import kotlinx.coroutines.runBlocking
+import kotlinx.android.synthetic.main.select_view.txtB_vimeo_url as txtB_vimeo_url1
+import kotlinx.android.synthetic.main.select_view.txtB_youtube_search as txtB_youtube_search1
+import kotlinx.android.synthetic.main.select_view.txtB_youtube_url as txtB_youtube_url1
 
 class FollowFragment : Fragment(), View.OnClickListener {
     private val TAG = "FollowFragment"
-    @SuppressLint("RestrictedApi")
+    @Suppress("PLUGIN_WARNING")
     override fun onClick(p0: View?) {
         when (p0!!.id){
             R.id.btn_youtube_search -> consume {
-                if(TextUtils.isEmpty(txtB_youtube_search.text.toString())){
+                if (TextUtils.isEmpty(this.txtB_youtube_search1.text.toString())) {
                     BLayout_youtube_search.error = "유튜브에서 검색하고 싶은 단어를 입력 후 터치하여 주세요";
                     return;
-                }else {
+                } else {
                     mListener!!.sendsection = 1
                     mListener!!.sendtype = 0
                     Log.i(TAG, "btn_youtube_search")
-                    mListener!!.searchWord = txtB_youtube_search.text.toString()
-                    onButtonPressed(txtB_youtube_search.text.toString())
-                    Log.i(TAG, txtB_youtube_search.text.toString())
+                    mListener!!.searchWord = txtB_youtube_search1.text.toString()
+                    onButtonPressed(txtB_youtube_search1.text.toString())
+                    Log.i(TAG, txtB_youtube_search1.text.toString())
                 }
             }
             R.id.btn_youtube_url -> consume {
-                if(TextUtils.isEmpty(txtB_youtube_url.text.toString())){
+                if(TextUtils.isEmpty(txtB_youtube_url1.text.toString())){
                     BLayout_youtube_url.error = "유튜브의 공유하기에서 url을 복사하여 붙여넣어 주세요";
                     return;
                 }else {
                     mListener!!.sendsection = 2
                     mListener!!.sendtype = 0
-                    mListener!!.showVideo(txtB_youtube_url.text.toString().substringAfterLast("/"))
+                    mListener!!.showVideo(txtB_youtube_url1.text.toString().substringAfterLast("/"))
                     Log.i(TAG, "btn_youtube_url")
                 }
             }/*
@@ -52,19 +54,19 @@ class FollowFragment : Fragment(), View.OnClickListener {
                 mListener!!.sendtype = 1f
             }*/
             R.id.btn_vimeo_url -> consume {
-                if(TextUtils.isEmpty(txtB_vimeo_url.text.toString())){
+                if(TextUtils.isEmpty(txtB_vimeo_url1.text.toString())){
                     BLayout_vimeo_url.error = "비메오의 공유하기에서 url을 복사하여 붙여넣어 주세요";
                     return;
                 }else {
                     mListener!!.sendsection = 2
                     mListener!!.sendtype = 1
-                    mListener!!.showVideo(txtB_vimeo_url.text.toString().substringAfterLast("/"))
+                    mListener!!.showVideo(txtB_vimeo_url1.text.toString().substringAfterLast("/"))
                     Log.i(TAG, "btn_vimeo_url")
                 }
             }
         }
     }
-    inline fun consume(f: () -> Unit): Boolean {
+    private inline fun consume(f: () -> Unit): Boolean {
         f()
         return true
     }
@@ -78,9 +80,7 @@ class FollowFragment : Fragment(), View.OnClickListener {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        val rootview = inflater.inflate(layout.select_view, container, false)
-
-        return rootview
+        return inflater.inflate(layout.select_view, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -136,18 +136,6 @@ class FollowFragment : Fragment(), View.OnClickListener {
         var searchWord:String?
     }
     companion object {
-        // TODO: Rename parameter arguments, choose names that match
-        // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment FollowFragment.
-         */
-        // TODO: Rename and change types and number of parameters
 
         fun newInstance() =
                 FollowFragment().apply {

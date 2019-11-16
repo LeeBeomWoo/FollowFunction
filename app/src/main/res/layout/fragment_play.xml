@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="cns.body.followfunction.PlayFragment"
-    android:id="@+id/item_mainLayout">
+    tools:context="cns.body.followfunction.PlayFragment">
 
     <cn.gavinliu.android.lib.scale.ScaleRelativeLayout
         android:id="@+id/button_layout"

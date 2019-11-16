@@ -1,5 +1,3 @@
-@file:Suppress("DEPRECATION")
-
 package cns.body.followfunction
 
 import android.annotation.SuppressLint
@@ -7,7 +5,6 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.pm.PackageManager
-import android.content.pm.PackageManager.GET_SIGNATURES
 import android.os.Bundle
 import android.os.Parcelable
 import android.util.Log
@@ -30,6 +27,7 @@ import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
 import java.security.MessageDigest
+import android.content.pm.PackageManager.GET_SIGNATURES as GET_SIGNATURES1
 
 class MainActivity : AppCompatActivity(), FollowFragment.OnFollowInteraction, YouTubeResult.OnYoutubeResultInteraction,
     PlayFragment.OnFragmentInteractionListener {
@@ -159,7 +157,7 @@ class MainActivity : AppCompatActivity(), FollowFragment.OnFollowInteraction, Yo
         {
             val signatures = context.packageManager.getPackageInfo(
                 packageName,
-                GET_SIGNATURES
+                GET_SIGNATURES1
             ).signatures
             for (signature in signatures)
             {
