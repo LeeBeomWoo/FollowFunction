@@ -172,6 +172,7 @@ class MainActivity : AppCompatActivity(), FollowFragment.OnFollowInteraction, Yo
         }
         return null
     }
+    @ObsoleteCoroutinesApi
     override suspend fun getDatas(part: String, q: String, api_Key: String, max_result: Int, more:Boolean) {
         Log.i(TAG, "getDatas")
         val youTube = YouTube.Builder(NetHttpTransport(), JacksonFactory.getDefaultInstance(),
