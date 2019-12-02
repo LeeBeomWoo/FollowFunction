@@ -263,6 +263,11 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
             play_record_Btn.visibility = View.VISIBLE
             textureView.visibility = View.VISIBLE
             record_Btn.visibility = View.VISIBLE
+            if (textureView.isAvailable) {
+                openCamera(textureView.width, textureView.height)
+            } else {
+                textureView.surfaceTextureListener = surfaceTextureListener
+            }
         } else {
             closeCamera()
             play_Btn.visibility = View.VISIBLE
@@ -271,14 +276,9 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
             play_record_Btn.visibility = View.GONE
             record_Btn.visibility = View.GONE
             textureView.visibility = View.GONE
-        }
-        if (textureView.isAvailable) {
-            openCamera(textureView.width, textureView.height)
-        } else {
-            textureView.surfaceTextureListener = surfaceTextureListener
-        }
-        if(videoPlaying){
-            video_View.seekTo(videoprogress)
+            if(videoPlaying){
+                video_View.seekTo(videoprogress)
+            }
         }
         when(requireActivity().windowManager.defaultDisplay.rotation){
 
@@ -684,14 +684,19 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
         })
         alpha_control.max = 99
         alpha_control.setOnSeekBarChangeListener(this)
-        if(video_camera){
-            if(videoPath == ""){
-                val intent = Intent(Intent.ACTION_GET_CONTENT)
-                val uri = Uri.parse(getExternalStoragePublicDirectory(DIRECTORY_MOVIES).path + File.separator + "bodygation" + File.separator)
-                intent.type = "video/mp4"
-                intent.putExtra(Intent.EXTRA_STREAM, uri)
-                startActivityForResult(Intent.createChooser(intent, "Select Video"), 3)
-                Log.i(TAG, "videoPath : $videoPath")
+        when {
+            video_camera -> {
+
+            }
+            else -> {
+                if(videoPath == ""){
+                    val intent = Intent(Intent.ACTION_GET_CONTENT)
+                    val uri = Uri.parse(getExternalStoragePublicDirectory(DIRECTORY_MOVIES).path + File.separator + "bodygation" + File.separator)
+                    intent.type = "video/mp4"
+                    intent.putExtra(Intent.EXTRA_STREAM, uri)
+                    startActivityForResult(Intent.createChooser(intent, "Select Video"), 3)
+                    Log.i(TAG, "videoPath : $videoPath")
+                }
             }
         }
     }

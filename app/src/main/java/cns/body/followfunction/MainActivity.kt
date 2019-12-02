@@ -3,17 +3,16 @@ package cns.body.followfunction
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Parcelable
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import cn.gavinliu.android.lib.scale.config.ScaleConfig
 import cns.body.followfunction.navigationitem.FollowFragment
 import cns.body.followfunction.navigationitem.YouTubeResult
 import com.example.followfunction.R
+import com.example.followfunction.R.id.root_layout
 import com.google.api.client.http.HttpRequest
 import com.google.api.client.http.HttpRequestInitializer
 import com.google.api.client.http.javanet.NetHttpTransport
@@ -27,6 +26,7 @@ import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
 import java.security.MessageDigest
+import kotlin.system.exitProcess
 import android.content.pm.PackageManager.GET_SIGNATURES as GET_SIGNATURES1
 
 class MainActivity : AppCompatActivity(), FollowFragment.OnFollowInteraction, YouTubeResult.OnYoutubeResultInteraction,
@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity(), FollowFragment.OnFollowInteraction, Yo
     override var currentVisiblePosition:Int = 0
     override var sendtype:Int = 0 //0은 유튜브, 1은 비메오
     override var data: MutableList<SearchResult> = arrayListOf()
-    var followFragment: Fragment? = null
+    var followFragment: FollowFragment? = null
     var youTubeResult: YouTubeResult? = null
     var playFragment: PlayFragment? = null
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,7 +68,7 @@ class MainActivity : AppCompatActivity(), FollowFragment.OnFollowInteraction, Yo
             }
             sendquery = savedInstanceState.getString("sendquery")
             searchWord = savedInstanceState.getString("searchWord")
-            Log.i(TAG + "_", "play"+ "\n sendquery :" + sendquery)
+            Log.i(TAG + "_", "play\n sendquery :$sendquery")
         }
         followFragment = supportFragmentManager.findFragmentByTag("follow") as FollowFragment?
         youTubeResult = supportFragmentManager.findFragmentByTag("youtube") as YouTubeResult?
@@ -79,11 +79,11 @@ class MainActivity : AppCompatActivity(), FollowFragment.OnFollowInteraction, Yo
                     Log.i(TAG, "mainTabFragment")
                     supportFragmentManager
                         .beginTransaction()
-                        .add(R.id.root_layout, FollowFragment.newInstance(), "follow")
+                        .add(root_layout, FollowFragment.newInstance(), "follow")
                         .commit()
                 }else{
                     supportFragmentManager
-                        .beginTransaction().replace(R.id.root_layout, followFragment!!).commit()
+                        .beginTransaction().replace(root_layout, followFragment!!).commit()
                 }
             }
             1->{
@@ -91,11 +91,11 @@ class MainActivity : AppCompatActivity(), FollowFragment.OnFollowInteraction, Yo
                     Log.i(TAG, "mainTabFragment")
                     supportFragmentManager
                         .beginTransaction()
-                        .add(R.id.root_layout, YouTubeResult.newInstance(sendquery!!), "youtube")
+                        .add(root_layout, YouTubeResult.newInstance(sendquery!!), "youtube")
                         .commit()
                 }else{
                     supportFragmentManager
-                        .beginTransaction().replace(R.id.root_layout, youTubeResult!!).commit()
+                        .beginTransaction().replace(root_layout, youTubeResult!!).commit()
                 }
             }
             2->{
@@ -104,7 +104,7 @@ class MainActivity : AppCompatActivity(), FollowFragment.OnFollowInteraction, Yo
                     supportFragmentManager
                         .beginTransaction()
                         .add(
-                            R.id.root_layout,
+                            root_layout,
                             PlayFragment.newInstance(
                                 viideoId!!,
                                 sendtype
@@ -112,7 +112,7 @@ class MainActivity : AppCompatActivity(), FollowFragment.OnFollowInteraction, Yo
                         .commit()
                 }else{
                     supportFragmentManager
-                        .beginTransaction().replace(R.id.root_layout, playFragment!!).commit()
+                        .beginTransaction().replace(root_layout, playFragment!!).commit()
                 }
             }
         }
@@ -124,13 +124,13 @@ class MainActivity : AppCompatActivity(), FollowFragment.OnFollowInteraction, Yo
             supportFragmentManager
                 .beginTransaction()
                 .replace(
-                    R.id.root_layout,
+                    root_layout,
                     PlayFragment.newInstance(s, sendtype), "play")
                 .commit()
         }else{
             supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.root_layout, playFragment as PlayFragment, "play")
+                .replace(root_layout, playFragment as PlayFragment, "play")
                 .commit()
         }
     }
@@ -204,12 +204,12 @@ class MainActivity : AppCompatActivity(), FollowFragment.OnFollowInteraction, Yo
         if(youTubeResult == null) {
             supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.root_layout, YouTubeResult.newInstance(q), "youtube")
+                .replace(root_layout, YouTubeResult.newInstance(q), "youtube")
                 .commit()
         }else{
             supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.root_layout, youTubeResult as YouTubeResult, "youtube")
+                .replace(root_layout, youTubeResult as YouTubeResult, "youtube")
                 .commit()
         }
     }
@@ -231,25 +231,20 @@ class MainActivity : AppCompatActivity(), FollowFragment.OnFollowInteraction, Yo
                     Log.i(TAG, "onBackPressed" + "true")
                     moveTaskToBack(true)
                     android.os.Process.killProcess(android.os.Process.myPid())
-                    System.exit(1)
+                    exitProcess(1)
                     return
                 } else {
                     Log.i(TAG, "onBackPressed" + "false")
                     val builder = AlertDialog.Builder(this)
                     if (title != null) builder.setTitle(title)
                     builder.setMessage("프로그램을 종료하시겠습니까?")
-                    builder.setPositiveButton("OK", object : DialogInterface.OnClickListener {
-                        override fun onClick(dialog: DialogInterface?, which: Int) {
-                            android.os.Process.killProcess(android.os.Process.myPid())
-                        }
-                    })
-                    builder.setNegativeButton("Cancel", object : DialogInterface.OnClickListener {
-                        override fun onClick(dialog: DialogInterface?, which: Int) {
-                            doubleBackToExitPressedOnce = false
-                            dialog!!.dismiss()
-                        }
+                    builder.setPositiveButton("OK"
+                    ) { dialog, _ -> android.os.Process.killProcess(android.os.Process.myPid()) }
+                    builder.setNegativeButton("Cancel"
+                    ) { dialog, _ ->
+                        doubleBackToExitPressedOnce = false
+                        dialog!!.dismiss()
                     }
-                    )
                     builder.show()
                     doubleBackToExitPressedOnce = true
                 }
@@ -261,11 +256,11 @@ class MainActivity : AppCompatActivity(), FollowFragment.OnFollowInteraction, Yo
                 if (followFragment == null) {
                     supportFragmentManager
                         .beginTransaction()
-                        .add(R.id.root_layout, FollowFragment.newInstance(), "follow")
+                        .add(root_layout, FollowFragment.newInstance(), "follow")
                         .commit()
                 }else{
                     supportFragmentManager
-                        .beginTransaction().replace(R.id.root_layout, followFragment!!).commit()
+                        .beginTransaction().replace(root_layout, followFragment!!).commit()
                 }
             }
             2->{
@@ -275,11 +270,11 @@ class MainActivity : AppCompatActivity(), FollowFragment.OnFollowInteraction, Yo
                 if (youTubeResult == null) {
                     supportFragmentManager
                         .beginTransaction()
-                        .add(R.id.root_layout, YouTubeResult.newInstance(sendquery!!), "youtube")
+                        .add(root_layout, YouTubeResult.newInstance(sendquery!!), "youtube")
                         .commit()
                 }else{
                     supportFragmentManager
-                        .beginTransaction().replace(R.id.root_layout, youTubeResult!!).commit()
+                        .beginTransaction().replace(root_layout, youTubeResult!!).commit()
                 }
             }
         }
