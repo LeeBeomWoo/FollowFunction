@@ -3,6 +3,7 @@ package cns.body.followfunction
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity.RESULT_OK
+import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager.PERMISSION_GRANTED
@@ -23,6 +24,7 @@ import android.os.Environment.DIRECTORY_MOVIES
 import android.os.Environment.getExternalStoragePublicDirectory
 import android.os.Handler
 import android.os.HandlerThread
+import android.provider.MediaStore
 import android.util.Log
 import android.util.Size
 import android.util.SparseIntArray
@@ -246,7 +248,16 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
         val state = Environment.getExternalStorageState()
         if ( Environment.MEDIA_MOUNTED == state || Environment.MEDIA_MOUNTED_READ_ONLY == state) {  // we can read the External Storage...
             //Retrieve the primary External Storage:
-            baseDir = getExternalStoragePublicDirectory(DIRECTORY_MOVIES).path
+            val resolver = context!!.contentResolver
+            val contentValues = ContentValues().apply {
+                put(MediaStore.MediaColumns.DISPLAY_NAME, "CuteKitten001")
+                put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
+                put(MediaStore.MediaColumns.RELATIVE_PATH, "DCIM/PerracoLabs")
+            }
+
+            val uri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+
+            baseDir = uri.toString()
         }else{
             baseDir = DIRECTORY_MOVIES
         }
@@ -971,8 +982,10 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
     private fun showToast(message : String) = Toast.makeText(activity, message, LENGTH_SHORT).show()
 
     private fun closePreviewSession() {
-        captureSession?.close()
-        captureSession = null
+        if(captureSession != null) {
+            captureSession!!.close()
+            captureSession = null
+        }
     }
 
     private fun stopRecordingVideo() {
@@ -1197,13 +1210,11 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
                 startActivityForResult(Intent.createChooser(intent, "Select Video"), 3)
                 Log.i(TAG, "videoPath : " + videoPath)
             }
-
             R.id.play_record_Btn//전후면 카메라변환
             -> {
                 Log.d(TAG, "viewChange_Btn thouch")
                 switchCamera()
             }
-
             R.id.viewChange_Btn//파일과 카메라간 변환
             -> {
                 if (video_camera) {

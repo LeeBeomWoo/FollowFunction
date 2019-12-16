@@ -60,17 +60,17 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-auth:4.0.1'
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.google.apis:google-api-services-people:v1-rev99-1.22.0'
-    implementation 'com.google.api-client:google-api-client:1.30.5'
+    implementation 'com.google.api-client:google-api-client:1.30.6'
     implementation 'com.google.apis:google-api-services-youtube:v3-rev99-1.17.0-rc'
-    implementation('com.google.api-client:google-api-client-android:1.30.5') {
+    implementation('com.google.api-client:google-api-client-android:1.30.6') {
         exclude group: 'org.apache.httpcomponents'
     }
     implementation 'com.squareup.picasso:picasso:2.71828'
     // Retrofit
-    implementation 'com.squareup.retrofit2:retrofit:2.6.2'
+    implementation 'com.squareup.retrofit2:retrofit:2.7.0'
     // JSON Parsing
-    implementation 'com.squareup.retrofit2:converter-gson:2.6.2'
-    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.6.2'
+    implementation 'com.squareup.retrofit2:converter-gson:2.7.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.7.0'
     implementation 'com.aurelhubert:ahbottomnavigation:2.1.0'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.10.1'
     implementation 'com.fasterxml.jackson.core:jackson-core:2.10.1'
@@ -78,7 +78,7 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:3.0.1'
     implementation 'pub.devrel:easypermissions:0.3.0'
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
-    implementation "com.squareup.retrofit2:adapter-rxjava2:2.6.2"
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.7.0'
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:2.8.47'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'

@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.content.pm.PackageManager
+import android.content.pm.PackageManager.GET_SIGNING_CERTIFICATES
+import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
 import android.util.Log
@@ -27,7 +29,6 @@ import java.io.IOException
 import java.io.InputStreamReader
 import java.security.MessageDigest
 import kotlin.system.exitProcess
-import android.content.pm.PackageManager.GET_SIGNATURES as GET_SIGNATURES1
 
 class MainActivity : AppCompatActivity(), FollowFragment.OnFollowInteraction, YouTubeResult.OnYoutubeResultInteraction,
     PlayFragment.OnFragmentInteractionListener {
@@ -155,10 +156,11 @@ class MainActivity : AppCompatActivity(), FollowFragment.OnFollowInteraction, Yo
     private fun getSHA1(packageName:String):String? {
         try
         {
-            val signatures = context.packageManager.getPackageInfo(
-                packageName,
-                GET_SIGNATURES1
-            ).signatures
+            val signatures = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                context.packageManager.getPackageInfo(packageName, GET_SIGNING_CERTIFICATES).signatures
+            } else {
+                TODO("VERSION.SDK_INT < P")
+            }
             for (signature in signatures)
             {
                 val md: MessageDigest = MessageDigest.getInstance("SHA-1")
@@ -240,7 +242,7 @@ class MainActivity : AppCompatActivity(), FollowFragment.OnFollowInteraction, Yo
                     if (title != null) builder.setTitle(title)
                     builder.setMessage("프로그램을 종료하시겠습니까?")
                     builder.setPositiveButton("OK"
-                    ) { dialog, _ -> android.os.Process.killProcess(android.os.Process.myPid()) }
+                    ) { _, _ -> android.os.Process.killProcess(android.os.Process.myPid()) }
                     builder.setNegativeButton("Cancel"
                     ) { dialog, _ ->
                         doubleBackToExitPressedOnce = false
