@@ -29,9 +29,9 @@ android {
     }
     defaultConfig {
         applicationId "cns.body.followfunction"
-        minSdkVersion 23
+        minSdkVersion 24
         targetSdkVersion 29
-        versionCode 7
+        versionCode 8
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
@@ -60,9 +60,9 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-auth:4.0.1'
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.google.apis:google-api-services-people:v1-rev99-1.22.0'
-    implementation 'com.google.api-client:google-api-client:1.30.6'
+    implementation 'com.google.api-client:google-api-client:1.30.7'
     implementation 'com.google.apis:google-api-services-youtube:v3-rev99-1.17.0-rc'
-    implementation('com.google.api-client:google-api-client-android:1.30.6') {
+    implementation('com.google.api-client:google-api-client-android:1.30.7') {
         exclude group: 'org.apache.httpcomponents'
     }
     implementation 'com.squareup.picasso:picasso:2.71828'

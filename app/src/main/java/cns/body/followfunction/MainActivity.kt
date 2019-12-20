@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.content.pm.PackageManager
-import android.content.pm.PackageManager.GET_SIGNING_CERTIFICATES
 import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
@@ -22,7 +21,6 @@ import com.google.api.client.json.jackson2.JacksonFactory
 import com.google.api.services.youtube.YouTube
 import com.google.api.services.youtube.model.SearchListResponse
 import com.google.api.services.youtube.model.SearchResult
-import com.google.common.io.BaseEncoding
 import kotlinx.coroutines.*
 import java.io.BufferedReader
 import java.io.IOException
@@ -153,26 +151,56 @@ class MainActivity : AppCompatActivity(), FollowFragment.OnFollowInteraction, Yo
         Log.i("data", data.toString())
     }
     @SuppressLint("PackageManagerGetSignatures")
-    private fun getSHA1(packageName:String):String? {
-        try
-        {
-            val signatures = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                context.packageManager.getPackageInfo(packageName, GET_SIGNING_CERTIFICATES).signatures
+    private fun getSHA1(packageName:String): List<String> {
+        val signatureList: List<String>
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                val sig = context.packageManager.getPackageInfo(
+                    packageName,
+                    PackageManager.GET_SIGNING_CERTIFICATES
+                ).signingInfo
+                signatureList = if (sig.hasMultipleSigners()) {
+                    // Send all with apkContentsSigners
+                    sig.apkContentsSigners.map {
+                        val digest = MessageDigest.getInstance("SHA")
+                        digest.update(it.toByteArray())
+                        bytesToHex(digest.digest())
+                    }
+                } else {
+                    // Send one with signingCertificateHistory
+                    sig.signingCertificateHistory.map {
+                        val digest = MessageDigest.getInstance("SHA")
+                        digest.update(it.toByteArray())
+                        bytesToHex(digest.digest())
+                    }
+                }
             } else {
-                TODO("VERSION.SDK_INT < P")
+                val sig = context.packageManager.getPackageInfo(
+                    packageName,
+                    PackageManager.GET_SIGNATURES
+                ).signatures
+                signatureList = sig.map {
+                    val digest = MessageDigest.getInstance("SHA")
+                    digest.update(it.toByteArray())
+                    bytesToHex(digest.digest())
+                }
             }
-            for (signature in signatures)
-            {
-                val md: MessageDigest = MessageDigest.getInstance("SHA-1")
-                Log.i(TAG, md.toString())
-                md.update(signature.toByteArray())
-                return BaseEncoding.base16().encode(md.digest())
-            }
-        }
-        catch (e: PackageManager.NameNotFoundException) {
+            return signatureList
+        }catch (e: PackageManager.NameNotFoundException) {
             e.printStackTrace()
         }
-        return null
+        return emptyList()
+    }
+    fun bytesToHex(bytes: ByteArray): String {
+        val hexArray = charArrayOf('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F')
+        val hexChars = CharArray(bytes.size * 2)
+        var v: Int
+        for (j in bytes.indices) {
+            v = bytes[j].toInt() and 0xFF
+            hexChars[j * 2] = hexArray[v.ushr(4)]
+            hexChars[j * 2 + 1] = hexArray[v and 0x0F]
+        }
+        return String(hexChars)
     }
     @ObsoleteCoroutinesApi
     override suspend fun getDatas(part: String, q: String, api_Key: String, max_result: Int, more:Boolean) {
