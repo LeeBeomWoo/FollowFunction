@@ -1,4 +1,4 @@
-package bodygate.bcns.bodygation.youtube
+package cns.body.followfunction.youtube
 
 import retrofit2.Call
 import retrofit2.Retrofit

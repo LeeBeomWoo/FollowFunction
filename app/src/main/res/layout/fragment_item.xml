@@ -30,7 +30,8 @@
         <ImageView
             android:id="@+id/yt_thumbnail"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:contentDescription="TODO" />
 
         <ImageView
             android:id="@+id/iv_yt_logo"

@@ -1,4 +1,4 @@
-package bodygate.bcns.bodygation.support
+package cns.body.followfunction.youtube
 
 import android.util.Log
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount

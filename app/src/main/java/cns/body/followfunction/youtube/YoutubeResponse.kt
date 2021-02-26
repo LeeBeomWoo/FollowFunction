@@ -1,6 +1,5 @@
-package bodygate.bcns.bodygation.youtube
+package cns.body.followfunction.youtube
 
-import com.google.api.services.youtube.model.SearchResult
 import com.google.gson.annotations.SerializedName
 
 
@@ -14,7 +13,7 @@ class YoutubeResponse {
     val nextPageToken: String? = null
     val pageInfo: PageInfo? = null
     val items: MutableList<Items> = ArrayList()
-    fun addItems(item:Items){
+    fun addItems(item: Items){
         items.add(item)
     }
     class PageInfo {

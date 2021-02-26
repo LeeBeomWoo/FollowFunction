@@ -39,6 +39,8 @@ import androidx.annotation.NonNull
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.PermissionChecker.checkCallingOrSelfPermission
+import androidx.core.content.PermissionChecker.checkPermission
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import cn.gavinliu.android.lib.scale.ScaleRelativeLayout
@@ -252,9 +254,14 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
             val contentValues = ContentValues().apply {
                 put(MediaStore.MediaColumns.DISPLAY_NAME, "CuteKitten001")
                 put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
-                put(MediaStore.MediaColumns.RELATIVE_PATH, "DCIM/PerracoLabs")
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+                    put(MediaStore.MediaColumns.RELATIVE_PATH, "DCIM/PerracoLabs")
+                }
             }
-
+            if (!hasPermissionsGranted(VIDEO_PERMISSIONS)) {
+                ActivityCompat.requestPermissions(this.requireActivity(), VIDEO_PERMISSIONS, REQUEST_VIDEO_PERMISSIONS)
+                return
+            }
             val uri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
 
             baseDir = uri.toString()
@@ -533,10 +540,12 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
             video_View.visibility = View.VISIBLE
             textureView.visibility = View.GONE
             video_View.z = 1.toFloat()
+            textureView.z = 2.toFloat()
         }else{
             textureView.visibility = View.VISIBLE
             video_View.visibility = View.GONE
             textureView.z = 1.toFloat()
+            video_View.z = 2.toFloat()
         }
         alpha_control.z = 0.toFloat()
         webview.z = 0.toFloat()
@@ -635,6 +644,17 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
         alpha_control.visibility = View.GONE
         textureView.layoutParams = LandCamera
         video_View.layoutParams = LandCamera
+        if(video_camera){
+            video_View.visibility = View.VISIBLE
+            textureView.visibility = View.GONE
+            video_View.z = 1.toFloat()
+            textureView.z = 2.toFloat()
+        }else{
+            textureView.visibility = View.VISIBLE
+            video_View.visibility = View.GONE
+            textureView.z = 1.toFloat()
+            video_View.z = 2.toFloat()
+        }
         webview.z = 0.toFloat()
         button_layout.z = 0.toFloat()
     }
