@@ -298,8 +298,8 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
                 video_View.seekTo(videoprogress)
             }
         }
+        webview.elevation = 4.toFloat()
         when(requireActivity().windowManager.defaultDisplay.rotation){
-
             0 -> {
                 //. SCREEN_ORIENTATION_PORTRAIT
                 if(video_camera){
@@ -307,8 +307,8 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
                 }else{
                     textureView.alpha = 1.toFloat()
                 }
-                webview.z = 2.toFloat()
-                alpha_control.progress = 99
+                webview.elevation = 4.toFloat()
+                alpha_control.progress = 100
             }
             2 -> {
                 //. SCREEN_ORIENTATION_REVERSE_PORTRAIT
@@ -317,22 +317,20 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
                 }else{
                     textureView.alpha = 1.toFloat()
                 }
-                webview.z = 2.toFloat()
-                alpha_control.progress = 99
+                webview.elevation = 4.toFloat()
+                alpha_control.progress = 100
             }
             //----------------------------------------
             1 -> {
                 //. SCREEN_ORIENTATION_LANDSCAPE
                 alpha_control.progress = 50
-                alpha_control.z = 0.toFloat()
-                webview.z = 2.toFloat()
+                alpha_control.elevation = 0.toFloat()
             }
             //----------------------------------------
             3 -> {
                 //. SCREEN_ORIENTATION_REVERSE_LANDSCAPE
                 alpha_control.progress = 50
-                alpha_control.z = 0.toFloat()
-                webview.z = 2.toFloat()
+                alpha_control.elevation = 0.toFloat()
             }
         }
         webview.onResume()
@@ -539,17 +537,17 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
         if(video_camera){
             video_View.visibility = View.VISIBLE
             textureView.visibility = View.GONE
-            video_View.z = 1.toFloat()
-            textureView.z = 2.toFloat()
+            video_View.elevation = 8.toFloat()
+            textureView.elevation = 12.toFloat()
         }else{
             textureView.visibility = View.VISIBLE
             video_View.visibility = View.GONE
-            textureView.z = 1.toFloat()
-            video_View.z = 2.toFloat()
+            textureView.elevation = 12.toFloat()
+            video_View.elevation = 8.toFloat()
         }
-        alpha_control.z = 0.toFloat()
-        webview.z = 0.toFloat()
-        button_layout.z = 0.toFloat()
+        alpha_control.elevation = 0.toFloat()
+        webview.elevation = 4.toFloat()
+        button_layout.elevation = 8.toFloat()
     }
     private fun PortrainSet(){
         LandWebView = ScaleRelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
@@ -647,16 +645,16 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
         if(video_camera){
             video_View.visibility = View.VISIBLE
             textureView.visibility = View.GONE
-            video_View.z = 1.toFloat()
-            textureView.z = 2.toFloat()
+            video_View.elevation = 8.toFloat()
+            textureView.elevation = 12.toFloat()
         }else{
             textureView.visibility = View.VISIBLE
             video_View.visibility = View.GONE
-            textureView.z = 1.toFloat()
-            video_View.z = 2.toFloat()
+            textureView.elevation = 12.toFloat()
+            video_View.elevation = 8.toFloat()
         }
-        webview.z = 0.toFloat()
-        button_layout.z = 0.toFloat()
+        webview.elevation = 8.toFloat()
+        button_layout.elevation = 4.toFloat()
     }
     @SuppressLint("SetJavaScriptEnabled")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
