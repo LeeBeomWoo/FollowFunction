@@ -32,6 +32,7 @@ import android.view.*
 import android.webkit.WebChromeClient
 import android.webkit.WebSettings
 import android.webkit.WebViewClient
+import android.widget.RelativeLayout
 import android.widget.SeekBar
 import android.widget.Toast
 import android.widget.Toast.LENGTH_SHORT
@@ -39,11 +40,8 @@ import androidx.annotation.NonNull
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.content.PermissionChecker.checkCallingOrSelfPermission
-import androidx.core.content.PermissionChecker.checkPermission
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import cn.gavinliu.android.lib.scale.ScaleRelativeLayout
 import cns.body.followfunction.camerause.AutoFitTextureView
 import cns.body.followfunction.camerause.CompareSizesByArea
 import cns.body.followfunction.camerause.ErrorDialog
@@ -79,14 +77,14 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
     private val SENSOR_ORIENTATION_INVERSE_DEGREES = 270
     private val TAG = "Item_follow_fragment_21"
     var baseDir = ""
-    var LandButton: ScaleRelativeLayout.LayoutParams? = null
-    var LandCamera:ScaleRelativeLayout.LayoutParams? = null
-    var LandWebView:ScaleRelativeLayout.LayoutParams? = null
-    var playlayout:ScaleRelativeLayout.LayoutParams? = null
-    var recordlayout:ScaleRelativeLayout.LayoutParams? = null
-    var switchlayout:ScaleRelativeLayout.LayoutParams? = null
-    var loadlayout:ScaleRelativeLayout.LayoutParams? = null
-    var play_recordlayout:ScaleRelativeLayout.LayoutParams? = null
+    var LandButton: RelativeLayout.LayoutParams? = null
+    var LandCamera:RelativeLayout.LayoutParams? = null
+    var LandWebView:RelativeLayout.LayoutParams? = null
+    var playlayout:RelativeLayout.LayoutParams? = null
+    var recordlayout:RelativeLayout.LayoutParams? = null
+    var switchlayout:RelativeLayout.LayoutParams? = null
+    var loadlayout:RelativeLayout.LayoutParams? = null
+    var play_recordlayout:RelativeLayout.LayoutParams? = null
     val CAMERA_FRONT = "1"
     val CAMERA_BACK = "0"
     var youtubeprogress:Int = 0
@@ -440,38 +438,38 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
         val context: Context
     }
     private fun LandSet(){
-        LandWebView = ScaleRelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-        LandButton = ScaleRelativeLayout.LayoutParams(resources.getDimensionPixelSize(R.dimen.portlaneimageBtnsize_item), ViewGroup.LayoutParams.MATCH_PARENT)
-        LandCamera = ScaleRelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-        playlayout = ScaleRelativeLayout.LayoutParams(
+        LandWebView = RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+        LandButton = RelativeLayout.LayoutParams(resources.getDimensionPixelSize(R.dimen.portlaneimageBtnsize_item), ViewGroup.LayoutParams.MATCH_PARENT)
+        LandCamera = RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+        playlayout = RelativeLayout.LayoutParams(
             resources.getDimensionPixelSize(R.dimen.imageBtnsize_item), resources.getDimensionPixelSize(
             R.dimen.imageBtnsize_item
         ))
-        recordlayout = ScaleRelativeLayout.LayoutParams(
+        recordlayout = RelativeLayout.LayoutParams(
             resources.getDimensionPixelSize(R.dimen.imageBtnsize_item), resources.getDimensionPixelSize(
             R.dimen.imageBtnsize_item
         ))
-        switchlayout = ScaleRelativeLayout.LayoutParams(
+        switchlayout = RelativeLayout.LayoutParams(
             resources.getDimensionPixelSize(R.dimen.imageBtnsize_item), resources.getDimensionPixelSize(
             R.dimen.imageBtnsize_item
         ))
-        play_recordlayout = ScaleRelativeLayout.LayoutParams(
+        play_recordlayout = RelativeLayout.LayoutParams(
             resources.getDimensionPixelSize(
             R.dimen.imageBtnsize_item
         ), resources.getDimensionPixelSize(R.dimen.imageBtnsize_item))
-        loadlayout = ScaleRelativeLayout.LayoutParams(
+        loadlayout = RelativeLayout.LayoutParams(
             resources.getDimensionPixelSize(R.dimen.imageBtnsize_item), resources.getDimensionPixelSize(
             R.dimen.imageBtnsize_item
         ))
-        val seek = ScaleRelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-        LandButton!!.addRule(ScaleRelativeLayout.ALIGN_PARENT_TOP)
-        LandButton!!.addRule(ScaleRelativeLayout.ALIGN_PARENT_START)
+        val seek = RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        LandButton!!.addRule(RelativeLayout.ALIGN_PARENT_TOP)
+        LandButton!!.addRule(RelativeLayout.ALIGN_PARENT_START)
         button_layout.layoutParams = LandButton
-        seek.addRule(ScaleRelativeLayout.ALIGN_PARENT_END)
-        seek.addRule(ScaleRelativeLayout.END_OF, R.id.button_layout)
+        seek.addRule(RelativeLayout.ALIGN_PARENT_END)
+        seek.addRule(RelativeLayout.END_OF, R.id.button_layout)
         alpha_control.layoutParams = seek
-        playlayout!!.addRule(ScaleRelativeLayout.ALIGN_PARENT_BOTTOM)
-        playlayout!!.addRule(ScaleRelativeLayout.CENTER_VERTICAL)
+        playlayout!!.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
+        playlayout!!.addRule(RelativeLayout.CENTER_VERTICAL)
         playlayout!!.setMargins(
             resources.getDimensionPixelSize(R.dimen.imageBtnmargine_item), resources.getDimensionPixelSize(
             R.dimen.imageBtnmargine_item
@@ -485,11 +483,11 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
         ), resources.getDimensionPixelSize(R.dimen.imageBtnmargine_item), resources.getDimensionPixelSize(
             R.dimen.imageBtnmargine_item
         ))
-        recordlayout!!.addRule(ScaleRelativeLayout.ALIGN_PARENT_TOP)
-        recordlayout!!.addRule(ScaleRelativeLayout.CENTER_VERTICAL)
+        recordlayout!!.addRule(RelativeLayout.ALIGN_PARENT_TOP)
+        recordlayout!!.addRule(RelativeLayout.CENTER_VERTICAL)
         record_Btn.layoutParams = recordlayout
-        loadlayout!!.addRule(ScaleRelativeLayout.ABOVE, R.id.load_Btn)
-        loadlayout!!.addRule(ScaleRelativeLayout.CENTER_VERTICAL)
+        loadlayout!!.addRule(RelativeLayout.ABOVE, R.id.load_Btn)
+        loadlayout!!.addRule(RelativeLayout.CENTER_VERTICAL)
         loadlayout!!.setMargins(
             resources.getDimensionPixelSize(R.dimen.imageBtnmargine_item), resources.getDimensionPixelSize(
             R.dimen.imageBtnmargine_item
@@ -497,19 +495,19 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
             R.dimen.imageBtnmargine_item
         ))
         play_Btn.layoutParams = loadlayout
-        play_recordlayout!!.addRule(ScaleRelativeLayout.CENTER_VERTICAL)
+        play_recordlayout!!.addRule(RelativeLayout.CENTER_VERTICAL)
         play_recordlayout!!.setMargins(
             resources.getDimensionPixelSize(R.dimen.imageBtnmargine_item), resources.getDimensionPixelSize(
             R.dimen.imageBtnmargine_item
         ), resources.getDimensionPixelSize(R.dimen.imageBtnmargine_item), resources.getDimensionPixelSize(
             R.dimen.imageBtnmargine_item
         ))
-        play_recordlayout!!.addRule(ScaleRelativeLayout.CENTER_HORIZONTAL)
+        play_recordlayout!!.addRule(RelativeLayout.CENTER_HORIZONTAL)
         viewChange_Btn.layoutParams = play_recordlayout
-        switchlayout!!.addRule(ScaleRelativeLayout.BELOW,
+        switchlayout!!.addRule(RelativeLayout.BELOW,
             R.id.record_Btn
         )
-        switchlayout!!.addRule(ScaleRelativeLayout.CENTER_VERTICAL)
+        switchlayout!!.addRule(RelativeLayout.CENTER_VERTICAL)
         switchlayout!!.setMargins(
             resources.getDimensionPixelSize(R.dimen.imageBtnmargine_item), resources.getDimensionPixelSize(
             R.dimen.imageBtnmargine_item
@@ -517,19 +515,19 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
             R.dimen.imageBtnmargine_item
         ))
         play_record_Btn.layoutParams = switchlayout
-        LandCamera!!.addRule(ScaleRelativeLayout.END_OF,
+        LandCamera!!.addRule(RelativeLayout.END_OF,
             R.id.button_layout
         )
-        LandCamera!!.addRule(ScaleRelativeLayout.ALIGN_PARENT_BOTTOM)
-        LandCamera!!.addRule(ScaleRelativeLayout.ALIGN_PARENT_END)
-        LandWebView!!.addRule(ScaleRelativeLayout.ALIGN_PARENT_END)
-        LandWebView!!.addRule(ScaleRelativeLayout.BELOW,
+        LandCamera!!.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
+        LandCamera!!.addRule(RelativeLayout.ALIGN_PARENT_END)
+        LandWebView!!.addRule(RelativeLayout.ALIGN_PARENT_END)
+        LandWebView!!.addRule(RelativeLayout.BELOW,
             R.id.alpha_control
         )
-        LandWebView!!.addRule(ScaleRelativeLayout.END_OF,
+        LandWebView!!.addRule(RelativeLayout.END_OF,
             R.id.button_layout
         )
-        LandWebView!!.addRule(ScaleRelativeLayout.ALIGN_PARENT_BOTTOM)
+        LandWebView!!.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
         webview.layoutParams = LandWebView
         video_View.layoutParams = LandCamera
         textureView.layoutParams = LandCamera
@@ -550,44 +548,44 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
         button_layout.elevation = 8.toFloat()
     }
     private fun PortrainSet(){
-        LandWebView = ScaleRelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-        LandButton = ScaleRelativeLayout.LayoutParams(
+        LandWebView = RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+        LandButton = RelativeLayout.LayoutParams(
             resources.getDimensionPixelSize(R.dimen.portwidthbtn), resources.getDimensionPixelSize(
             R.dimen.portbtn
         ))
-        LandCamera = ScaleRelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-        playlayout = ScaleRelativeLayout.LayoutParams(
+        LandCamera = RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+        playlayout = RelativeLayout.LayoutParams(
             resources.getDimensionPixelSize(R.dimen.portlaneimageBtnsize_item), resources.getDimensionPixelSize(
             R.dimen.portlaneimageBtnsize_item
         ))
-        recordlayout = ScaleRelativeLayout.LayoutParams(
+        recordlayout = RelativeLayout.LayoutParams(
             resources.getDimensionPixelSize(R.dimen.portlaneimageBtnsize_item), resources.getDimensionPixelSize(
             R.dimen.portlaneimageBtnsize_item
         ))
-        switchlayout = ScaleRelativeLayout.LayoutParams(
+        switchlayout = RelativeLayout.LayoutParams(
             resources.getDimensionPixelSize(R.dimen.portlaneimageBtnsize_item), resources.getDimensionPixelSize(
             R.dimen.portlaneimageBtnsize_item
         ))
-        play_recordlayout = ScaleRelativeLayout.LayoutParams(
+        play_recordlayout = RelativeLayout.LayoutParams(
             resources.getDimensionPixelSize(
             R.dimen.portlaneimageBtnsize_item
         ), resources.getDimensionPixelSize(R.dimen.portlaneimageBtnsize_item))
-        loadlayout = ScaleRelativeLayout.LayoutParams(
+        loadlayout = RelativeLayout.LayoutParams(
             resources.getDimensionPixelSize(R.dimen.portlaneimageBtnsize_item), resources.getDimensionPixelSize(
             R.dimen.portlaneimageBtnsize_item
         ))
-        LandButton!!.addRule(ScaleRelativeLayout.ALIGN_PARENT_END)
-        LandButton!!.addRule(ScaleRelativeLayout.ALIGN_PARENT_TOP)
+        LandButton!!.addRule(RelativeLayout.ALIGN_PARENT_END)
+        LandButton!!.addRule(RelativeLayout.ALIGN_PARENT_TOP)
         button_layout.layoutParams = LandButton
-        LandWebView!!.addRule(ScaleRelativeLayout.ALIGN_PARENT_START)
-        LandWebView!!.addRule(ScaleRelativeLayout.ALIGN_PARENT_END)
-        LandWebView!!.addRule(ScaleRelativeLayout.ALIGN_PARENT_BOTTOM)
-        LandWebView!!.addRule(ScaleRelativeLayout.BELOW,
+        LandWebView!!.addRule(RelativeLayout.ALIGN_PARENT_START)
+        LandWebView!!.addRule(RelativeLayout.ALIGN_PARENT_END)
+        LandWebView!!.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
+        LandWebView!!.addRule(RelativeLayout.BELOW,
             R.id.button_layout
         )
         webview.layoutParams = LandWebView
-        playlayout!!.addRule(ScaleRelativeLayout.ALIGN_PARENT_BOTTOM)
-        playlayout!!.addRule(ScaleRelativeLayout.CENTER_HORIZONTAL)
+        playlayout!!.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
+        playlayout!!.addRule(RelativeLayout.CENTER_HORIZONTAL)
         playlayout!!.setMargins(
             resources.getDimensionPixelSize(R.dimen.imageBtnmargine_item), resources.getDimensionPixelSize(
             R.dimen.imageBtnmargine_item
@@ -601,11 +599,11 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
         ), resources.getDimensionPixelSize(R.dimen.imageBtnmargine_item), resources.getDimensionPixelSize(
             R.dimen.imageBtnmargine_item
         ))
-        recordlayout!!.addRule(ScaleRelativeLayout.ALIGN_PARENT_TOP)
-        recordlayout!!.addRule(ScaleRelativeLayout.CENTER_HORIZONTAL)
+        recordlayout!!.addRule(RelativeLayout.ALIGN_PARENT_TOP)
+        recordlayout!!.addRule(RelativeLayout.CENTER_HORIZONTAL)
         record_Btn.layoutParams = recordlayout
-        loadlayout!!.addRule(ScaleRelativeLayout.ABOVE, R.id.load_Btn)
-        loadlayout!!.addRule(ScaleRelativeLayout.CENTER_HORIZONTAL)
+        loadlayout!!.addRule(RelativeLayout.ABOVE, R.id.load_Btn)
+        loadlayout!!.addRule(RelativeLayout.CENTER_HORIZONTAL)
         loadlayout!!.setMargins(
             resources.getDimensionPixelSize(R.dimen.imageBtnmargine_item), resources.getDimensionPixelSize(
             R.dimen.imageBtnmargine_item
@@ -613,8 +611,8 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
             R.dimen.imageBtnmargine_item
         ))
         play_Btn.layoutParams = loadlayout
-        play_recordlayout!!.addRule(ScaleRelativeLayout.CENTER_VERTICAL)
-        play_recordlayout!!.addRule(ScaleRelativeLayout.CENTER_HORIZONTAL)
+        play_recordlayout!!.addRule(RelativeLayout.CENTER_VERTICAL)
+        play_recordlayout!!.addRule(RelativeLayout.CENTER_HORIZONTAL)
         play_recordlayout!!.setMargins(
             resources.getDimensionPixelSize(R.dimen.imageBtnmargine_item), resources.getDimensionPixelSize(
             R.dimen.imageBtnmargine_item
@@ -622,10 +620,10 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
             R.dimen.imageBtnmargine_item
         ))
         viewChange_Btn.layoutParams = play_recordlayout
-        switchlayout!!.addRule(ScaleRelativeLayout.BELOW,
+        switchlayout!!.addRule(RelativeLayout.BELOW,
             R.id.record_Btn
         )
-        switchlayout!!.addRule(ScaleRelativeLayout.CENTER_HORIZONTAL)
+        switchlayout!!.addRule(RelativeLayout.CENTER_HORIZONTAL)
         switchlayout!!.setMargins(
             resources.getDimensionPixelSize(R.dimen.imageBtnmargine_item), resources.getDimensionPixelSize(
             R.dimen.imageBtnmargine_item
@@ -633,12 +631,12 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
             R.dimen.imageBtnmargine_item
         ))
         play_record_Btn.layoutParams = switchlayout
-        LandCamera!!.addRule(ScaleRelativeLayout.ALIGN_PARENT_START)
-        LandCamera!!.addRule(ScaleRelativeLayout.ALIGN_PARENT_TOP)
-        LandCamera!!.addRule(ScaleRelativeLayout.START_OF,
+        LandCamera!!.addRule(RelativeLayout.ALIGN_PARENT_START)
+        LandCamera!!.addRule(RelativeLayout.ALIGN_PARENT_TOP)
+        LandCamera!!.addRule(RelativeLayout.START_OF,
             R.id.button_layout
         )
-        LandCamera!!.addRule(ScaleRelativeLayout.ABOVE, R.id.webview)
+        LandCamera!!.addRule(RelativeLayout.ABOVE, R.id.webview)
         alpha_control.visibility = View.GONE
         textureView.layoutParams = LandCamera
         video_View.layoutParams = LandCamera
@@ -661,6 +659,8 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
         super.onViewCreated(view, savedInstanceState)
         cameraId = CAMERA_FRONT
         startBackgroundThread()
+        //
+/**
         val curOrientation =  requireActivity().windowManager.defaultDisplay.rotation
 
         when (curOrientation) {
@@ -692,7 +692,9 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
             }
         //----------------------------------------
         } /*endSwitch*/
+        **/
         viewSet()
+        
         rotationListener = rotationListenerHelper()
         rotationListener!!.listen(this.requireContext(), object :
             rotationCallbackFn {
@@ -711,7 +713,8 @@ class PlayFragment : Fragment(), View.OnClickListener, SeekBar.OnSeekBarChangeLi
                     requireActivity().recreate()
             }
         })
-        alpha_control.max = 99
+        
+        alpha_control.max = 100
         alpha_control.setOnSeekBarChangeListener(this)
         when {
             video_camera -> {

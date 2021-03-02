@@ -1,6 +1,7 @@
 package cns.body.followfunction
 
 import android.annotation.SuppressLint
+import android.app.ActionBar
 import android.app.AlertDialog
 import android.content.Context
 import android.content.pm.PackageManager
@@ -8,6 +9,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
 import android.util.Log
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import cn.gavinliu.android.lib.scale.config.ScaleConfig
 import cns.body.followfunction.navigationitem.FollowFragment
@@ -59,6 +61,7 @@ class MainActivity : AppCompatActivity(), FollowFragment.OnFollowInteraction, Yo
             (3).toFloat(),    // Design FontScale
             ScaleConfig.DIMENS_UNIT_DP)
         setContentView(R.layout.activity_main)
+        var actionBar = supportActionBar;
         Log.i(TAG + "_", "onCreate")
         if (savedInstanceState != null) {
             sectionInt = savedInstanceState.getInt("sectionInt")
@@ -72,8 +75,23 @@ class MainActivity : AppCompatActivity(), FollowFragment.OnFollowInteraction, Yo
         followFragment = supportFragmentManager.findFragmentByTag("follow") as FollowFragment?
         youTubeResult = supportFragmentManager.findFragmentByTag("youtube") as YouTubeResult?
         playFragment = supportFragmentManager.findFragmentByTag("play") as PlayFragment?
+    
+        val curOrientation =  windowManager.defaultDisplay.rotation
+        when (curOrientation) {
+            0 -> {
+                //. SCREEN_ORIENTATION_PORTRAIT
+                
+            } 1 -> {
+                //. SCREEN_ORIENTATION_LANDSCAPE
+            } 2 -> {
+                //. SCREEN_ORIENTATION_REVERSE_PORTRAIT
+            } 3 -> {
+                //. SCREEN_ORIENTATION_REVERSE_LANDSCAPE
+            }
+        }
         when(sectionInt){
             0->{
+                actionBar!!.show()
                 if (followFragment == null) {
                     Log.i(TAG, "mainTabFragment")
                     supportFragmentManager
@@ -86,6 +104,7 @@ class MainActivity : AppCompatActivity(), FollowFragment.OnFollowInteraction, Yo
                 }
             }
             1->{
+                actionBar!!.show()
                 if (youTubeResult == null) {
                     Log.i(TAG, "mainTabFragment")
                     supportFragmentManager
@@ -98,6 +117,7 @@ class MainActivity : AppCompatActivity(), FollowFragment.OnFollowInteraction, Yo
                 }
             }
             2->{
+                actionBar!!.hide()
                 if (playFragment == null) {
                     Log.i(TAG, "mainTabFragment")
                     supportFragmentManager
